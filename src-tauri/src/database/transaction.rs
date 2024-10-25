@@ -1,4 +1,4 @@
-use chrono::{Date, DateTime, NaiveDate};
+use chrono::DateTime;
 use rusqlite::{params, Connection, Result};
 use uuid::Uuid;
 

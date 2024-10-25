@@ -57,7 +57,7 @@ mod tests {
     use rust_decimal::Decimal;
 
     use crate::database::{
-        account::{self, Account},
+        account::{Account},
         details::Details,
         transaction::Transaction,
     };

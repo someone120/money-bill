@@ -1,7 +1,5 @@
 use rusqlite::{params, Connection, Result};
 use rust_decimal::prelude::*;
-use rust_decimal_macros::dec;
-use uuid::Uuid;
 
 #[derive(Debug)]
 pub struct Account {
