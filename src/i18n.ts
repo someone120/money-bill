@@ -8,7 +8,7 @@ export class i18n {
     this.localeId = localeId;
     // ..
   }
-  getString(key: string) {
+  getString(key: string):string {
     let locales = { en_US: en_US, zh_CN: zh_CN };
     console.log(locales[this.localeId] ?? locales["en_US"]);
     console.log((locales[this.localeId] ?? locales["en_US"])[key]);

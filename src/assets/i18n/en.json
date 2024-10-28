@@ -1,5 +1,7 @@
 {
-    "income":"income",
-    "expenses":"expenses",
-    "balance":"balance"
+  "income": "Income",
+  "expenses": "Expenses",
+  "balance": "Balance",
+  "home": "Home",
+  "assest": "Assest"
 }
