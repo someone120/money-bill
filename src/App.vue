@@ -1,25 +1,19 @@
 <script setup lang="ts">
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
+import { RouterView } from "vue-router";
 import IncomeCost from "./components/IncomeCost.vue";
+import SideBar from "./components/side-bar.vue";
 </script>
 
 <template>
   <div class="container">
     <!-- 边栏 -->
-    <div class="side-bar"></div>
+    <div class="side-bar"><SideBar /></div>
     <div class="flex flex1 flex-column">
       <!-- 顶栏 -->
       <div class="flex app-bar"></div>
-      <div class="flex flex1">
-        <!-- 主要内容 -->
-        <div style="flex: 3" class="flex flex-column primary-content mg8">
-          <!-- 收入/支出/结余 -->
-          <IncomeCost class="desk-only"/>
-        </div>
-        <!-- 每日支出/收入 -->
-        <div style="flex: 2" class="flex flex-column calendar"></div>
-      </div>
+      <RouterView/>
     </div>
     <!-- <Greet /> -->
   </div>
@@ -52,7 +46,7 @@ import IncomeCost from "./components/IncomeCost.vue";
 }
 
 .side-bar {
-  width: 200px;
+  width: 150px;
   background-color: white;
 }
 .flex {
