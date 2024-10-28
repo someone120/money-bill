@@ -1,14 +1,11 @@
 <template>
-  <div class="flex summary-bar">
+  <div class="flex summary-bar" style="margin-bottom: 8px">
     <div class="flex flex1 border mgr8 flex-column box">
       <div
         class="flex flex1"
         style="margin: 5px; margin-bottom: 0; align-self: flex-start"
       >
-        <img
-          src="./../assets/call_received_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.svg"
-          class="icon"
-        />
+        <img src="./../assets/svg/income.svg" class="icon" />
         <p style="margin: 4px; margin-bottom: 0" class="hint-color">
           {{ getString("income") }}
         </p>
@@ -23,10 +20,7 @@
         class="flex flex1"
         style="margin: 5px; margin-bottom: 0; align-self: flex-start"
       >
-        <img
-          src="./../assets/arrow_outward_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.svg"
-          class="icon"
-        />
+        <img src="./../assets/svg/expenses.svg" class="icon" />
         <p style="margin: 4px; margin-bottom: 0" class="hint-color">
           {{ getString("expenses") }}
         </p>
@@ -41,10 +35,7 @@
         class="flex flex1"
         style="margin: 5px; margin-bottom: 0; align-self: flex-start"
       >
-        <img
-          src="./../assets/savings_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.svg"
-          class="icon"
-        />
+        <img src="./../assets/svg/balance.svg" class="icon" />
         <p style="margin: 4px; margin-bottom: 0" class="hint-color">
           {{ getString("balance") }}
         </p>
@@ -115,7 +106,7 @@ import { invoke } from "@tauri-apps/api/core";
 const income = ref(0);
 const expenses = ref(0);
 let i18 = i18n.getInstace("zh_CN");
-function getString(key) {
+function getString(key: string): string {
   return i18.getString(key);
 }
 
