@@ -23,7 +23,11 @@ import VChart, { THEME_KEY } from "vue-echarts";
 import { ref, provide, Ref } from "vue";
 import { GridComponent } from "echarts/components";
 import { ECBasicOption } from "echarts/types/dist/shared";
-
+import { i18n } from "../i18n";
+let i18 = i18n.getInstace("zh_CN");
+function getString(key: string): string {
+  return i18.getString(key);
+}
 use([
   GridComponent,
   CanvasRenderer,
@@ -52,7 +56,7 @@ const option: Ref<ECBasicOption> = ref({
   xAxis: [
     {
       type: "category",
-      data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      data: [getString("mon"), getString('tue'), getString("wed"), getString("thu"),getString("fri"), getString("sat"), getString("sun")],
       axisTick: {
         alignWithLabel: true,
       },
@@ -65,17 +69,7 @@ const option: Ref<ECBasicOption> = ref({
   ],
   series: [
     {
-      name: "Direct",
-      type: "bar",
-      barWidth: "20%",
-      data: [10, 52, 200, 334, 390, 330, 220],
-      animationDelay: function (idx) {
-        return idx * 10;
-      },
-      color: "#60bf23",
-    },
-    {
-      name: "income",
+      name: getString("expenses"),
       type: "bar",
       barWidth: "20%",
       data: [10, 52, 200, 334, 390, 330, 220],
@@ -83,6 +77,16 @@ const option: Ref<ECBasicOption> = ref({
         return idx * 10;
       },
       color: "#f33c75",
+    },
+    {
+      name: getString("income"),
+      type: "bar",
+      barWidth: "20%",
+      data: [10, 52, 200, 334, 390, 330, 220],
+      animationDelay: function (idx) {
+        return idx * 10;
+      },
+      color: "#60bf23",
     },
   ],
 });
