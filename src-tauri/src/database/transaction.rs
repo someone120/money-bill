@@ -5,7 +5,7 @@ use uuid::Uuid;
 #[derive(Debug)]
 pub struct Transaction {
     pub id: String,
-    pub date: i32,
+    pub date: String,
     pub extra: String,
 }
 
@@ -19,7 +19,7 @@ pub fn add_transaction(
         "INSERT INTO TRANS (id,time,extra) VALUES (?1,?2,?3)",
         (
             id.as_str(),
-            date.timestamp(),
+            date.format("%Y-%m-%d %H:%M").to_string().as_str(),
             extra,
         ),
     )?;

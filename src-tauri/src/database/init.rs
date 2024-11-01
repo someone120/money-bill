@@ -42,7 +42,7 @@ fn init_transaction(conn: &Connection) -> Result<()> {
         "
     CREATE TABLE TRANS(
         id TEXT PRIMARY KEY,
-        time DATE NOT NULL,
+        time TEXT NOT NULL,
         extra VARCHAR(255)
     )
     ",
