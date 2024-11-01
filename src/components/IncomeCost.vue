@@ -110,14 +110,14 @@ function getString(key: string): string {
   return i18.getString(key);
 }
 
-// import {getCurrentInstance} from 'vue';
+import { getCurrentInstance } from "vue";
 // function ch(){
 //   i18.changeLocale('en_US')
 //   instance!.proxy!.$forceUpdate();
 // }
 invoke("get_income_expenses").then((i) => {
-  income.value = i as number[][0];
-  expenses.value = i as number[][0];
+  income.value = (i as number[])[0];
+  expenses.value = (i as number[])[1];
   console.log(i);
 });
 </script>
