@@ -3,5 +3,12 @@
   "expenses": "支出",
   "balance": "余额",
   "home": "首页",
-  "assest": "资产"
+  "assest": "资产",
+  "mon":"周一",
+  "tue":"周二",
+  "wed":"周三",
+  "thu":"周四",
+  "fri":"周五",
+  "sat":"周六",
+  "sun":"周日"
 }
