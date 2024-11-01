@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ExpensesHistogram from './components/ExpensesHistogram.vue';
-import IncomeCost from './components/IncomeCost.vue';
+import IncomeExpenses from './components/IncomeExpenses.vue';
 </script>
 
 <template>
@@ -8,7 +8,7 @@ import IncomeCost from './components/IncomeCost.vue';
     <!-- 主要内容 -->
     <div style="flex: 3" class="flex flex-column primary-content mg8">
       <!-- 收入/支出/结余 -->
-      <IncomeCost class="desk-only" />
+      <IncomeExpenses class="desk-only" />
       <ExpensesHistogram/>
     </div>
     <!-- 每日支出/收入 -->
