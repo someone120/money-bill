@@ -93,7 +93,7 @@ pub fn get_weekly_expenses(conn: &Connection)-> Result<Vec<f32>,Error>{
         if s.0.account.starts_with("income") {
             continue;
         }
-        let date=chrono::DateTime::parse_from_str(s.1.as_str(),&"%Y-%m-%d %H:%M".to_string()).unwrap();
+        let date=chrono::NaiveDateTime::parse_from_str(s.1.as_str(),&"%Y-%m-%d %H:%M".to_string()).unwrap();
         result[date.weekday().num_days_from_monday() as usize] += s.0.balance.to_f32().unwrap();
     }
 
@@ -119,7 +119,7 @@ pub fn get_weekly_income(conn: &Connection)-> Result<Vec<f32>,Error>{
         if s.0.account.starts_with("expenses") {
             continue;
         }
-        let date=chrono::DateTime::parse_from_str(s.1.as_str(),&"%Y-%m-%d %H:%M".to_string()).unwrap();
+        let date=chrono::NaiveDateTime::parse_from_str(s.1.as_str(),"%Y-%m-%d %H:%M").unwrap();
         result[date.weekday().num_days_from_monday() as usize] += s.0.balance.to_f32().unwrap();
     }
 

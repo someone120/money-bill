@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <v-chart class="chart" :option="option" />
+    <v-chart class="chart" :option="option" :loading="loading" />
   </div>
 </template>
 <style lang="css" scoped>
@@ -24,6 +24,7 @@ import { ref, provide, Ref } from "vue";
 import { GridComponent } from "echarts/components";
 import { ECBasicOption } from "echarts/types/dist/shared";
 import { i18n } from "../i18n";
+import { invoke } from "@tauri-apps/api/core";
 let i18 = i18n.getInstace("zh_CN");
 function getString(key: string): string {
   return i18.getString(key);
@@ -38,8 +39,8 @@ use([
 ]);
 
 provide(THEME_KEY, "auto");
-
-const option: Ref<ECBasicOption> = ref({
+let loading = ref<boolean>(false);
+let op = ref({
   tooltip: {
     trigger: "axis",
     axisPointer: {
@@ -56,7 +57,15 @@ const option: Ref<ECBasicOption> = ref({
   xAxis: [
     {
       type: "category",
-      data: [getString("mon"), getString('tue'), getString("wed"), getString("thu"),getString("fri"), getString("sat"), getString("sun")],
+      data: [
+        getString("mon"),
+        getString("tue"),
+        getString("wed"),
+        getString("thu"),
+        getString("fri"),
+        getString("sat"),
+        getString("sun"),
+      ],
       axisTick: {
         alignWithLabel: true,
       },
@@ -72,7 +81,7 @@ const option: Ref<ECBasicOption> = ref({
       name: getString("expenses"),
       type: "bar",
       barWidth: "20%",
-      data: [10, 52, 200, 334, 390, 330, 220],
+      data: [0, 0, 0, 0, 0, 0, 0],
       animationDelay: function (idx) {
         return idx * 10;
       },
@@ -82,12 +91,21 @@ const option: Ref<ECBasicOption> = ref({
       name: getString("income"),
       type: "bar",
       barWidth: "20%",
-      data: [10, 52, 200, 334, 390, 330, 220],
+      data: [0, 0, 0, 0, 0, 0, 0],
       animationDelay: function (idx) {
         return idx * 10;
       },
       color: "#60bf23",
     },
   ],
+});
+let option: Ref<ECBasicOption> = ref(op);
+loading.value = true;
+invoke("get_weekly_income_expenses").then((res: any) => {
+  loading.value = false;
+  console.log(res["expense"]);
+  
+  op.value.series[0].data = (res["expenses"] as number[]).map((v) => v *-1);
+  op.value.series[1].data = res["income"];
 });
 </script>
