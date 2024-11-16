@@ -1,16 +1,45 @@
 use std::{collections::HashMap, fs, sync::Mutex};
 
 use database::{
+    account::{self, Account},
     get_month_expenses, get_month_incomed, get_weekly_expenses, get_weekly_income, init,
 };
 use rusqlite::Connection;
 use rust_decimal::prelude::*;
 use serde_json::{json, Map};
-use tauri_struct::WeeklyIncomeExpenses;
+use tauri_struct::{AccountIconName, WeeklyIncomeExpenses};
 mod database;
 mod error;
 mod tauri_struct;
 struct ConnectionWrapper(pub Mutex<Connection>);
+
+#[tauri::command]
+fn get_income_accounts(conn: tauri::State<ConnectionWrapper>) -> Vec<AccountIconName> {
+    let conn = conn.0.lock().unwrap();
+    let accounts = account::get_income_accounts(&conn).unwrap();
+    let accounts = accounts
+        .iter()
+        .map(|it| AccountIconName {
+            name: it.name.clone(),
+            icon: it.icon.clone().unwrap_or("".to_string()),
+        
+        }).collect();
+    return accounts;
+}
+
+#[tauri::command]
+fn get_expenses_accounts(conn: tauri::State<ConnectionWrapper>) -> Vec<AccountIconName> {
+    let conn = conn.0.lock().unwrap();
+    let accounts = account::get_expenses_accounts(&conn).unwrap();
+    let accounts = accounts
+        .iter()
+        .map(|it| AccountIconName {
+            name: it.name.clone(),
+            icon: it.icon.clone().unwrap_or("".to_string()),
+        })
+        .collect();
+    return accounts;
+}
 
 #[tauri::command]
 fn get_income_expenses(conn: tauri::State<ConnectionWrapper>) -> Vec<f32> {
@@ -85,10 +114,10 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             greet,
             get_income_expenses,
-            get_weekly_income_expenses
+            get_weekly_income_expenses,
+            get_expenses_accounts,
+            get_income_accounts,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
-
-

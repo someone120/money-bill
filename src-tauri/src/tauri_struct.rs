@@ -6,3 +6,8 @@ pub struct WeeklyIncomeExpenses{
     pub income:Vec<f32>,
     pub expenses:Vec<f32>
 }
+#[derive(Serialize,Deserialize)]
+pub struct AccountIconName {
+    pub name:String,
+    pub icon:String
+}

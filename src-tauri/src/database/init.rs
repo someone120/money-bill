@@ -13,7 +13,9 @@ fn init_account(conn: &Connection) -> Result<()> {
     CREATE TABLE ACCOUNT(
         name VARCHAR(255) NOT NULL PRIMARY KEY ,
         currency VARCHAR(255) NOT NULL,
-        balance float NOT NULL
+        balance float NOT NULL,
+        icon VARCHAR(255),
+        extra VARCHAR(255) 
     )
     ",
         (),
@@ -77,6 +79,8 @@ mod tests {
                 name: row.get(0)?,
                 currency: row.get(1)?,
                 balance: Decimal::from_f32_retain(row.get::<usize, f32>(2)?).unwrap(),
+                icon: row.get(3)?,
+                extra:row.get(4)?,
             })
         })?;
         if iter.next().is_some() {
