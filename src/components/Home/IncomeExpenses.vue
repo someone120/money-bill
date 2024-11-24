@@ -5,7 +5,7 @@
         class="flex flex1"
         style="margin: 5px; margin-bottom: 0; align-self: flex-start"
       >
-        <img src="./../assets/svg/income.svg" class="icon" />
+        <img src="/svg/income.svg" class="icon" />
         <p style="margin: 4px; margin-bottom: 0" class="hint-color">
           {{ getString("income") }}
         </p>
@@ -20,7 +20,7 @@
         class="flex flex1"
         style="margin: 5px; margin-bottom: 0; align-self: flex-start"
       >
-        <img src="./../assets/svg/expenses.svg" class="icon" />
+        <img src="/svg/expenses.svg" class="icon" />
         <p style="margin: 4px; margin-bottom: 0" class="hint-color">
           {{ getString("expenses") }}
         </p>
@@ -35,7 +35,7 @@
         class="flex flex1"
         style="margin: 5px; margin-bottom: 0; align-self: flex-start"
       >
-        <img src="./../assets/svg/balance.svg" class="icon" />
+        <img src="/svg/balance.svg" class="icon" />
         <p style="margin: 4px; margin-bottom: 0" class="hint-color">
           {{ getString("balance") }}
         </p>
@@ -100,7 +100,7 @@ p {
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { i18n } from "../i18n";
+import { i18n } from "../../i18n";
 import { invoke } from "@tauri-apps/api/core";
 
 const income = ref(0);

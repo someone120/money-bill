@@ -1,7 +1,7 @@
 import { createMemoryHistory, createRouter } from "vue-router";
-import Home from "./Home.vue";
+import Home from "./components/Home/Home.vue";
 import path from "path";
-import AddBill from "./components/AddBill.vue";
+import AddBill from "./components/Bill/AddBill.vue";
 
 const routes = [
   { path: "/", component: Home },

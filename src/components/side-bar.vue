@@ -5,7 +5,7 @@
     </div>
     <RouterLink to="/" class="routelink">
       <div class="flex item">
-        <img src="./../assets/svg/home.svg" />
+        <img src="/svg/home.svg" />
         <p>
           {{ getString("home") }}
         </p>
@@ -13,7 +13,13 @@
     </RouterLink>
     <RouterLink to="/assess" class="routelink">
       <div class="flex item">
-        <img src="./../assets/svg/wallet.svg" />
+        <img src="/svg/wallet.svg" />
+        <p>{{ getString("assest") }}</p>
+      </div>
+    </RouterLink>
+    <RouterLink to="/AddBill" class="routelink">
+      <div class="flex item">
+        <img src="/svg/wallet.svg" />
         <p>{{ getString("assest") }}</p>
       </div>
     </RouterLink>

@@ -23,7 +23,7 @@ import VChart, { THEME_KEY } from "vue-echarts";
 import { ref, provide, Ref } from "vue";
 import { GridComponent } from "echarts/components";
 import { ECBasicOption } from "echarts/types/dist/shared";
-import { i18n } from "../i18n";
+import { i18n } from "../../i18n";
 import { invoke } from "@tauri-apps/api/core";
 let i18 = i18n.getInstace("zh_CN");
 function getString(key: string): string {
