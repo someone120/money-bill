@@ -1,14 +1,9 @@
 <template>
-  <div class="box">
-    <v-chart class="chart" :option="option" :loading="loading" />
+  <div class="h-[200px] bg-white rounded-[10px] w-full">
+    <v-chart class="h-full w-full" :option="option" :loading="loading" autoresize/>
   </div>
 </template>
 <style lang="css" scoped>
-.box {
-  height: 200px;
-  background-color: white;
-  border-radius: 10px;
-}
 </style>
 <script setup lang="ts">
 import { use } from "echarts/core";
@@ -108,4 +103,6 @@ invoke("get_weekly_income_expenses").then((res: any) => {
   op.value.series[0].data = (res["expenses"] as number[]).map((v) => v *-1);
   op.value.series[1].data = res["income"];
 });
+
+
 </script>

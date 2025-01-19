@@ -1,102 +1,37 @@
 <template>
-  <div class="flex summary-bar" style="margin-bottom: 8px">
-    <div class="flex flex1 border mgr8 flex-column box">
-      <div
-        class="flex flex1"
-        style="margin: 5px; margin-bottom: 0; align-self: flex-start"
-      >
-        <img src="/svg/income.svg" class="icon" />
-        <p style="margin: 4px; margin-bottom: 0" class="hint-color">
-          {{ getString("income") }}
-        </p>
+  <div class="flex flex-row mb-2 w-full">
+    <div class="flex flex-col flex-1 border rounded-xl mr-2 bg-white h-20 p-2">
+      <div class="flex items-center">
+        <img src="/svg/income.svg" class="w-6 h-6 mr-1" />
+        <p class="text-gray-400 text-sm">{{ getString("income") }}</p>
       </div>
-      <div class="flex flex1" style="margin-bottom: 8px">
-        <p style="margin: 0; margin-left: 15px">¥</p>
-        <p style="margin: 0; margin-left: 16px">{{ income.toFixed(2) }}</p>
+      <div class="flex items-center mt-2">
+        <p class="ml-4 text-sm">¥</p>
+        <p class="ml-4 text-sm">{{ income.toFixed(2) }}</p>
       </div>
     </div>
-    <div class="flex flex1 border mgr8 flex-column box">
-      <div
-        class="flex flex1"
-        style="margin: 5px; margin-bottom: 0; align-self: flex-start"
-      >
-        <img src="/svg/expenses.svg" class="icon" />
-        <p style="margin: 4px; margin-bottom: 0" class="hint-color">
-          {{ getString("expenses") }}
-        </p>
+    <div class="flex flex-col flex-1 border rounded-xl mr-2 bg-white h-20 p-2">
+      <div class="flex items-center">
+        <img src="/svg/expenses.svg" class="w-6 h-6 mr-1" />
+        <p class="text-gray-400 text-sm">{{ getString("expenses") }}</p>
       </div>
-      <div class="flex flex1" style="margin-bottom: 8px">
-        <p style="margin: 0; margin-left: 15px">¥</p>
-        <p style="margin: 0; margin-left: 16px">{{ expenses.toFixed(2) }}</p>
+      <div class="flex items-center mt-2">
+        <p class="ml-4 text-sm">¥</p>
+        <p class="ml-4 text-sm">{{ expenses.toFixed(2) }}</p>
       </div>
     </div>
-    <div class="flex flex1 border flex-column box">
-      <div
-        class="flex flex1"
-        style="margin: 5px; margin-bottom: 0; align-self: flex-start"
-      >
-        <img src="/svg/balance.svg" class="icon" />
-        <p style="margin: 4px; margin-bottom: 0" class="hint-color">
-          {{ getString("balance") }}
-        </p>
+    <div class="flex flex-col flex-1 border rounded-xl bg-white h-20 p-2">
+      <div class="flex items-center">
+        <img src="/svg/balance.svg" class="w-6 h-6 mr-1" />
+        <p class="text-gray-400 text-sm">{{ getString("balance") }}</p>
       </div>
-      <div class="flex flex1" style="margin-bottom: 8px">
-        <p style="margin: 0; margin-left: 15px">¥</p>
-        <p style="margin: 0; margin-left: 16px">
-          {{ (income - expenses).toFixed(2) }}
-        </p>
+      <div class="flex items-center mt-2">
+        <p class="ml-4 text-sm">¥</p>
+        <p class="ml-4 text-sm">{{ (income - expenses).toFixed(2) }}</p>
       </div>
     </div>
   </div>
 </template>
-
-<style scoped>
-.box {
-  height: 70px;
-  background-color: white;
-}
-p {
-  text-align: left;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.hint-color {
-  color: #c0c0c0;
-}
-
-.icon {
-  margin: 4px;
-  margin-bottom: 0;
-  width: 25px;
-  height: 25px;
-}
-
-.mgr8 {
-  margin-right: 8px;
-}
-
-.mg8 {
-  margin: 8px;
-}
-
-.border {
-  border-radius: 10px;
-}
-
-.flex-column {
-  flex-direction: column;
-}
-
-.flex1 {
-  flex: 1;
-  flex-wrap: nowrap;
-}
-
-.flex {
-  display: flex;
-}
-</style>
 
 <script setup lang="ts">
 import { ref } from "vue";

@@ -1,69 +1,36 @@
 <template>
-  <div class="flex flex-column bar">
-    <div class="flex head">
-      <p style="align-items: baseline; margin: auto">Money Bill</p>
+  <div class="flex flex-col h-full w-36">
+    <div class="flex h-16 border-b-2 border-gray-200">
+      <p class="m-auto">Money Bill</p>
     </div>
-    <RouterLink to="/" class="routelink">
-      <div class="flex item">
-        <img src="/svg/home.svg" />
-        <p>
+    <RouterLink to="/" class="no-underline text-black">
+      <div
+        class="flex items-center justify-center h-10 mt-5 mb-0 mx-5 bg-gray-200 rounded-lg"
+      >
+        <img src="/svg/home.svg" class="ml-2.5 mr-1.5" />
+        <p class="m-auto ml-1.5">
           {{ getString("home") }}
         </p>
       </div>
     </RouterLink>
-    <RouterLink to="/assess" class="routelink">
-      <div class="flex item">
-        <img src="/svg/wallet.svg" />
-        <p>{{ getString("assest") }}</p>
+    <RouterLink to="/assess" class="no-underline text-black">
+      <div
+        class="flex items-center justify-center h-10 mt-5 mb-0 mx-5 bg-gray-200 rounded-lg"
+      >
+        <img src="/svg/wallet.svg" class="ml-2.5 mr-1.5" />
+        <p class="m-auto ml-1.5">{{ getString("assest") }}</p>
       </div>
     </RouterLink>
-    <RouterLink to="/AddBill" class="routelink">
-      <div class="flex item">
-        <img src="/svg/wallet.svg" />
-        <p>{{ getString("assest") }}</p>
+    <RouterLink to="/AddBill" class="no-underline text-black">
+      <div
+        class="flex items-center justify-center h-10 mt-5 mb-0 mx-5 bg-gray-200 rounded-lg"
+      >
+        <img src="/svg/wallet.svg" class="ml-2.5 mr-1.5" />
+        <p class="m-auto ml-1.5">{{ getString("assest") }}</p>
       </div>
     </RouterLink>
   </div>
 </template>
-
-<style scoped>
-.flex {
-  display: flex;
-}
-.flex-column {
-  flex-direction: column;
-}
-.item {
-  justify-content: center;
-  margin: 20px;
-  margin-bottom: 0;
-  background-color: #eee;
-  border-radius: 10px;
-  height: 40px;
-}
-.head {
-  height: 60px;
-  border-bottom: #eee solid 2px;
-  border-right: #eee solid 2px;
-}
-.bar {
-  height: 100%;
-  width: 100%;
-}
-p {
-  align-items: baseline;
-  margin: auto;
-  margin-left: 6px;
-}
-img {
-  margin: 6px;
-  margin-left: 10px;
-}
-.routelink {
-  text-decoration: none;
-  color: #000;
-}
-</style>
 
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
