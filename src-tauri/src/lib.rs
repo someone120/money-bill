@@ -1,12 +1,11 @@
-use std::{collections::HashMap, fs, sync::Mutex};
+use std::{fs, sync::Mutex};
 
 use database::{
-    account::{self, Account},
+    account::{self},
     get_month_expenses, get_month_incomed, get_weekly_expenses, get_weekly_income, init,
 };
 use rusqlite::Connection;
 use rust_decimal::prelude::*;
-use serde_json::{json, Map};
 use tauri_struct::{AccountIconName, WeeklyIncomeExpenses};
 mod database;
 mod error;
@@ -22,7 +21,7 @@ fn get_income_accounts(conn: tauri::State<ConnectionWrapper>) -> Vec<AccountIcon
         .map(|it| AccountIconName {
             name: it.name.clone(),
             icon: it.icon.clone().unwrap_or("".to_string()),
-        
+
         }).collect();
     return accounts;
 }
@@ -79,7 +78,7 @@ fn get_weekly_income_expenses(conn: tauri::State<ConnectionWrapper>) -> WeeklyIn
     let expenses = get_weekly_expenses(&conn).unwrap();
     return WeeklyIncomeExpenses {
         income: incomes,
-        expenses: expenses,
+        expenses
     };
 }
 

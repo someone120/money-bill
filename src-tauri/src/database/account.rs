@@ -1,6 +1,5 @@
 use rusqlite::{params, Connection, Result};
 use rust_decimal::prelude::*;
-use serde::{Deserialize, Serialize};
 
 #[derive(Debug)]
 pub struct Account {
@@ -23,7 +22,7 @@ pub struct Account {
 /// # Returns
 /// * `Result<()>` - On success, returns Ok(()). On failure, returns an error.
 pub fn add_account(
-  conn: &Connection,
+    conn: &Connection,
     name: &str,
     currency: &str,
     icon: &str,
@@ -45,7 +44,7 @@ pub fn add_account(
 /// # Returns
 /// * `Result<Vec<Account>>` - On success, returns a vector of Account structs. On failure, returns an error.
 pub fn read_account(conn: &Connection, name: &str) -> Result<Vec<Account>> {
-  // Prepare and execute the SQL query to select account information by name
+    // Prepare and execute the SQL query to select account information by name
     let mut stmt = conn.prepare("SELECT * FROM ACCOUNT WHERE name = ?")?;
 
     // Map each row from the result set into an Account struct
@@ -75,7 +74,7 @@ pub fn read_account(conn: &Connection, name: &str) -> Result<Vec<Account>> {
 /// # Returns
 /// * `Result<()>` - On success, returns Ok(()). On failure, returns an error.
 pub fn del_account(conn: &Connection, name: &str) -> Result<()> {
-  // SQLite query to delete an account from the database by name
+    // SQLite query to delete an account from the database by name
     conn.execute("DELETE FROM ACCOUNT WHERE name=?1", params![name])?;
     Ok(())
 }
