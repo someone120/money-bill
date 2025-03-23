@@ -15,6 +15,7 @@
     "@tauri-apps/plugin-fs": "~2",
     "@tauri-apps/plugin-shell": ">=2.0.0",
     "@vue/language-server": "v1.8",
+    "@vuepic/vue-datepicker": "^11.0.1",
     "echarts": "^5.5.1",
     "vue": "^3.3.4",
     "vue-echarts": "^7.0.3",

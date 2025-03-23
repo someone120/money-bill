@@ -1,34 +1,54 @@
 use std::{fs, sync::Mutex};
 
+use chrono::DateTime;
 use database::{
-    account::{self},
-    get_month_expenses, get_month_incomed, get_weekly_expenses, get_weekly_income, init,
+    account::{self}, details::add_details, get_month_expenses, get_month_incomed, get_weekly_expenses, get_weekly_income, init, transaction::add_transaction
 };
 use rusqlite::Connection;
 use rust_decimal::prelude::*;
-use tauri_struct::{AccountIconName, WeeklyIncomeExpenses};
+use tauri_struct::{AccountAmount, AccountIconName, WeeklyIncomeExpenses};
 mod database;
 mod error;
 mod tauri_struct;
-struct ConnectionWrapper(pub Mutex<Connection>);
+struct ConnectionWrapper {
+    db: Mutex<Connection>,
+}
+
+#[tauri::command]
+async fn add_bills(
+    conn: tauri::State<'_, ConnectionWrapper>,
+    account_amounts: Vec<AccountAmount>,
+    date: i64,
+    extra: String,
+) -> Result<(), String> {
+    let conn = conn.db.lock().unwrap();
+    let utc_datetime: DateTime<chrono::Utc> = DateTime::from_timestamp(date, 0).unwrap();
+    let trans_id = add_transaction(&conn,utc_datetime, &extra).unwrap();
+    for account_amount in account_amounts {
+        let amount = Decimal::from_f32_retain(account_amount.amount).unwrap();
+        let _ = add_details(&conn, &trans_id, &account_amount.account, amount);
+    }
+    println!("{}",date);
+    Ok(())
+}
 
 #[tauri::command]
 fn get_income_accounts(conn: tauri::State<ConnectionWrapper>) -> Vec<AccountIconName> {
-    let conn = conn.0.lock().unwrap();
+    let conn = conn.db.lock().unwrap();
     let accounts = account::get_income_accounts(&conn).unwrap();
     let accounts = accounts
         .iter()
         .map(|it| AccountIconName {
             name: it.name.clone(),
             icon: it.icon.clone().unwrap_or("".to_string()),
-
-        }).collect();
+        })
+        .collect();
     return accounts;
 }
 
 #[tauri::command]
 fn get_expenses_accounts(conn: tauri::State<ConnectionWrapper>) -> Vec<AccountIconName> {
-    let conn = conn.0.lock().unwrap();
+    let conn = conn.db.lock().unwrap();
     let accounts = account::get_expenses_accounts(&conn).unwrap();
     let accounts = accounts
         .iter()
@@ -42,7 +62,7 @@ fn get_expenses_accounts(conn: tauri::State<ConnectionWrapper>) -> Vec<AccountIc
 
 #[tauri::command]
 fn get_income_expenses(conn: tauri::State<ConnectionWrapper>) -> Vec<f32> {
-    let conn = conn.0.lock().unwrap();
+    let conn = conn.db.lock().unwrap();
     // let bar_id = account::add_account(&conn, "income::a", "USD").unwrap();
     // let foo_id = account::add_account(&conn, "expenses::a", "USD").unwrap();
 
@@ -73,12 +93,12 @@ fn get_income_expenses(conn: tauri::State<ConnectionWrapper>) -> Vec<f32> {
 
 #[tauri::command]
 fn get_weekly_income_expenses(conn: tauri::State<ConnectionWrapper>) -> WeeklyIncomeExpenses {
-    let conn = conn.0.lock().unwrap();
+    let conn = conn.db.lock().unwrap();
     let incomes = get_weekly_income(&conn).unwrap();
     let expenses = get_weekly_expenses(&conn).unwrap();
     return WeeklyIncomeExpenses {
         income: incomes,
-        expenses
+        expenses,
     };
 }
 
@@ -109,13 +129,16 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_shell::init())
-        .manage(ConnectionWrapper(Mutex::new(conn)))
+        .manage(ConnectionWrapper {
+            db: Mutex::new(conn),
+        })
         .invoke_handler(tauri::generate_handler![
             greet,
             get_income_expenses,
             get_weekly_income_expenses,
             get_expenses_accounts,
             get_income_accounts,
+            add_bills
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

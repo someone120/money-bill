@@ -30,7 +30,6 @@ fn init_details(conn: &Connection) -> Result<()> {
         id TEXT PRIMARY KEY,
         trans_id TEXT NOT NULL,
         account TEXT NOT NULL,
-        currency VARCHAR(255) NOT NULL,
         balance float NOT NULL
     )
     ",
@@ -70,10 +69,10 @@ mod tests {
         let conn = Connection::open_in_memory()?;
         init_account(&conn)?;
         conn.execute(
-            "INSERT INTO ACCOUNT (name,currency,balance) VALUES (?1,?2,?3)",
+            "INSERT INTO ACCOUNT (name,balance) VALUES (?1,?2,?3)",
             ( "a", "b", 0.1),
         )?;
-        let mut stmt = conn.prepare("SELECT name,currency,balance FROM ACCOUNT")?;
+        let mut stmt = conn.prepare("SELECT name,balance FROM ACCOUNT")?;
         let mut iter = stmt.query_map([], |row| {
             Ok(Account {
                 name: row.get(0)?,
@@ -94,18 +93,17 @@ mod tests {
         let conn = Connection::open_in_memory()?;
         init_details(&conn)?;
         conn.execute(
-            "INSERT INTO DETAIL (id,trans_id,account,currency,balance) VALUES (?1,?2,?3,?4,?5)",
+            "INSERT INTO DETAIL (id,trans_id,account,balance) VALUES (?1,?2,?3,?4,?5)",
             (0, 1, 2, "CNY", 0.1),
         )?;
         let mut stmt =
-            conn.prepare("SELECT id,trans_id,account,currency,balance FROM DETAIL")?;
+            conn.prepare("SELECT id,trans_id,account,balance FROM DETAIL")?;
         let mut iter = stmt.query_map([], |row| {
             Ok(Details {
                 id: row.get(0)?,
                 trans_id: row.get(1)?,
                 account: row.get(2)?,
-                currency: row.get(3)?,
-                balance: Decimal::from_f32_retain(row.get::<usize, f32>(4)?).unwrap(),
+                balance: Decimal::from_f32_retain(row.get::<usize, f32>(3)?).unwrap(),
             })
         })?;
 

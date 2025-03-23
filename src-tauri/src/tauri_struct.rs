@@ -11,3 +11,9 @@ pub struct AccountIconName {
     pub name:String,
     pub icon:String
 }
+
+#[derive(Serialize,Deserialize)]
+pub struct AccountAmount {
+    pub account:String,
+    pub amount:f32
+}

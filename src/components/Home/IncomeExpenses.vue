@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-row mb-2 w-full">
-    <div class="flex flex-col flex-1 border rounded-xl mr-2 bg-white h-20 p-2">
+    <div class="flex flex-col flex-1 border rounded-lg mr-2 bg-white h-20 p-2">
       <div class="flex items-center">
         <img src="/svg/income.svg" class="w-6 h-6 mr-1" />
         <p class="text-gray-400 text-sm">{{ getString("income") }}</p>
@@ -10,7 +10,7 @@
         <p class="ml-4 text-sm">{{ income.toFixed(2) }}</p>
       </div>
     </div>
-    <div class="flex flex-col flex-1 border rounded-xl mr-2 bg-white h-20 p-2">
+    <div class="flex flex-col flex-1 border rounded-lg mr-2 bg-white h-20 p-2">
       <div class="flex items-center">
         <img src="/svg/expenses.svg" class="w-6 h-6 mr-1" />
         <p class="text-gray-400 text-sm">{{ getString("expenses") }}</p>
@@ -20,7 +20,7 @@
         <p class="ml-4 text-sm">{{ expenses.toFixed(2) }}</p>
       </div>
     </div>
-    <div class="flex flex-col flex-1 border rounded-xl bg-white h-20 p-2">
+    <div class="flex flex-col flex-1 border rounded-lg bg-white h-20 p-2">
       <div class="flex items-center">
         <img src="/svg/balance.svg" class="w-6 h-6 mr-1" />
         <p class="text-gray-400 text-sm">{{ getString("balance") }}</p>

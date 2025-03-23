@@ -1,10 +1,9 @@
 <template>
-  <div class="h-[200px] bg-white rounded-[10px] w-full">
+  <div class="h-72 bg-white rounded-lg w-full">
     <v-chart class="h-full w-full" :option="option" :loading="loading" autoresize/>
   </div>
 </template>
-<style lang="css" scoped>
-</style>
+
 <script setup lang="ts">
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
