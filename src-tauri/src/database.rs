@@ -26,14 +26,15 @@ pub fn get_month_incomed(conn: &Connection) -> Result<Decimal, Error> {
   let mut result = Decimal::zero();
     // Prepare and execute SQL statement to select relevant transactions for the current month.
     let mut stmt = conn
-        .prepare("SELECT DETAIL.id,trans_id,account,balance FROM DETAIL INNER JOIN TRANS ON trans_id=TRANS.id and strftime('%Y-%m', time) = strftime('%Y-%m', 'now')")?;
+        .prepare("SELECT DETAIL.id,trans_id,account,currency,balance FROM DETAIL INNER JOIN TRANS ON trans_id=TRANS.id and strftime('%Y-%m', time) = strftime('%Y-%m', 'now')")?;
     // Iterate over the results to calculate total income.
     let iter = stmt.query_map(params![], |row| {
         Ok(Details {
             id: row.get(0)?,
             trans_id: row.get(1)?,
             account: row.get(2)?,
-            balance: Decimal::from_f32_retain(row.get::<usize, f32>(3)?).unwrap(),
+            currency: row.get(3)?,
+            balance: Decimal::from_f32_retain(row.get::<usize, f32>(4)?).unwrap(),
         })
     })?;
     for i in iter {
@@ -60,14 +61,15 @@ pub fn get_month_expenses(conn: &Connection) -> Result<Decimal, Error> {
     let mut result = Decimal::zero();
     // Prepare and execute SQL statement to select relevant transactions for the current month.
     let mut stmt = conn
-        .prepare("SELECT DETAIL.id,trans_id,account,balance FROM DETAIL INNER JOIN TRANS ON trans_id=TRANS.id and strftime('%Y-%m', time) = strftime('%Y-%m', 'now')")?;
+        .prepare("SELECT DETAIL.id,trans_id,account,currency,balance FROM DETAIL INNER JOIN TRANS ON trans_id=TRANS.id and strftime('%Y-%m', time) = strftime('%Y-%m', 'now')")?;
     // Iterate over the results to calculate total expenses.
     let iter = stmt.query_map(params![], |row| {
         Ok(Details {
             id: row.get(0)?,
             trans_id: row.get(1)?,
             account: row.get(2)?,
-            balance: Decimal::from_f32_retain(row.get::<usize, f32>(3)?).unwrap(),
+            currency: row.get(3)?,
+            balance: Decimal::from_f32_retain(row.get::<usize, f32>(4)?).unwrap(),
         })
     })?;
     for i in iter {
@@ -121,15 +123,16 @@ pub fn get_weekly_expenses(conn: &Connection) -> Result<Vec<f32>, Error> {
     let mut result = vec![0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
     // Prepare and execute SQL statement to select relevant transactions for the current week.
     let mut stmt = conn
-        .prepare("SELECT DETAIL.id,trans_id,account,balance,time FROM DETAIL INNER JOIN TRANS ON trans_id=TRANS.id and strftime('%Y %W', time) = strftime('%Y %W', 'now') ORDER BY TIME")?;
+        .prepare("SELECT DETAIL.id,trans_id,account,currency,balance,time FROM DETAIL INNER JOIN TRANS ON trans_id=TRANS.id and strftime('%Y %W', time) = strftime('%Y %W', 'now') ORDER BY TIME")?;
     // Iterate over the results to calculate weekly expenses.
     let iter = stmt.query_map(params![], |row: &rusqlite::Row<'_>| -> rusqlite::Result<(Details, String)> {
         Ok((Details {
             id: row.get(0)?,
             trans_id: row.get(1)?,
             account: row.get(2)?,
-            balance: Decimal::from_f32_retain(row.get::<usize, f32>(3)?).unwrap(),
-        }, row.get(4)?))
+            currency: row.get(3)?,
+            balance: Decimal::from_f32_retain(row.get::<usize, f32>(4)?).unwrap(),
+        }, row.get(5)?))
     })?;
     for i in iter {
         let s = i?;
@@ -158,15 +161,16 @@ pub fn get_weekly_income(conn: &Connection) -> Result<Vec<f32>, Error> {
     let mut result = vec![0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
     // Prepare and execute SQL statement to select relevant transactions for the current week.
     let mut stmt = conn
-        .prepare("SELECT DETAIL.id,trans_id,account,balance,time FROM DETAIL INNER JOIN TRANS ON trans_id=TRANS.id and strftime('%Y %W', time) = strftime('%Y %W', 'now') ORDER BY TIME")?;
+        .prepare("SELECT DETAIL.id,trans_id,account,currency,balance,time FROM DETAIL INNER JOIN TRANS ON trans_id=TRANS.id and strftime('%Y %W', time) = strftime('%Y %W', 'now') ORDER BY TIME")?;
     // Iterate over the results to calculate weekly income.
     let iter = stmt.query_map(params![], |row: &rusqlite::Row<'_>| -> rusqlite::Result<(Details, String)> {
         Ok((Details {
             id: row.get(0)?,
             trans_id: row.get(1)?,
             account: row.get(2)?,
-            balance: Decimal::from_f32_retain(row.get::<usize, f32>(3)?).unwrap(),
-        }, row.get(4)?))
+            currency: row.get(3)?,
+            balance: Decimal::from_f32_retain(row.get::<usize, f32>(4)?).unwrap(),
+        }, row.get(5)?))
     })?;
     for i in iter {
         let s = i?;
@@ -216,12 +220,14 @@ mod tests {
             &conn,
             id.as_str(),
             "income::bar",
+            "USD",
             Decimal::from_f32_retain(-10.0).unwrap(),
         )?;
         details::add_details(
             &conn,
             id.as_str(),
             "expenses::foo",
+            "USD",
             Decimal::from_f32_retain(10.0).unwrap(),
         )?;
         let id = transaction::add_transaction(&conn, date, "")?;
@@ -229,12 +235,14 @@ mod tests {
             &conn,
             id.as_str(),
             "income::bar",
+            "USD",
             Decimal::from_f32_retain(-12.0).unwrap(),
         )?;
         details::add_details(
             &conn,
             id.as_str(),
             "expenses::foo",
+            "USD",
             Decimal::from_f32_retain(12.0).unwrap(),
         )?;
         recalcute(&conn)?;

@@ -20,13 +20,14 @@ async fn add_bills(
     account_amounts: Vec<AccountAmount>,
     date: i64,
     extra: String,
+    currency: String
 ) -> Result<(), String> {
     let conn = conn.db.lock().unwrap();
     let utc_datetime: DateTime<chrono::Utc> = DateTime::from_timestamp(date, 0).unwrap();
     let trans_id = add_transaction(&conn,utc_datetime, &extra).unwrap();
     for account_amount in account_amounts {
         let amount = Decimal::from_f32_retain(account_amount.amount).unwrap();
-        let _ = add_details(&conn, &trans_id, &account_amount.account, amount);
+        let _ = add_details(&conn, &trans_id, &account_amount.account,&currency, amount);
     }
     println!("{}",date);
     Ok(())

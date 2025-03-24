@@ -43,7 +43,7 @@
     <div>
       <button
         @click="addTransaction"
-        class="m-2 h-12 rounded p-3 border border-gray-300"
+        class="m-2 h-12 rounded p-3 border border-gray-300 bg-blue-500 text-white"
       >
         确认
       </button>
@@ -105,6 +105,7 @@ const addTransaction = () => {
     accountAmounts: data,
     date: parseInt(''+new Date().getTime()/1000),
     extra: extra.value,
+    currency: "CNY",
   });
 };
 </script>
