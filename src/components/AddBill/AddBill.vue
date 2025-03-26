@@ -68,6 +68,7 @@ let accountList: Ref<AccountItem[]> = ref([
 const amounts = ref([]);
 const date = ref(new Date());
 const extra = ref("");
+const currency = ref("");
 const changeAccount = (account: AccountItem, index: string) => {
   let index1 = parseInt(index);
 
@@ -105,7 +106,7 @@ const addTransaction = () => {
     accountAmounts: data,
     date: parseInt(''+new Date().getTime()/1000),
     extra: extra.value,
-    currency: "CNY",
+    currency: currency.value,
   });
 };
 </script>
