@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import AddBill from "../Bill/AddBill.vue";
-import AddBillItems from "../Bill/AddBillItems.vue";
 import ExpensesHistogram from "./ExpensesHistogram.vue";
 import IncomeExpenses from "./IncomeExpenses.vue";
 </script>

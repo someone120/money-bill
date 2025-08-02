@@ -6,8 +6,7 @@
         <p class="text-gray-400 text-sm">{{ getString("income") }}</p>
       </div>
       <div class="flex items-center mt-2">
-        <p class="ml-4 text-sm">¥</p>
-        <p class="ml-4 text-sm">{{ income.toFixed(2) }}</p>
+        <p class="ml-4 text-sm text-[#60bf23]">{{ income.toFixed(2) }}</p>
       </div>
     </div>
     <div class="flex flex-col flex-1 border rounded-lg mr-2 bg-white h-20 p-2">
@@ -16,8 +15,7 @@
         <p class="text-gray-400 text-sm">{{ getString("expenses") }}</p>
       </div>
       <div class="flex items-center mt-2">
-        <p class="ml-4 text-sm">¥</p>
-        <p class="ml-4 text-sm">{{ expenses.toFixed(2) }}</p>
+        <p class="ml-4 text-sm text-[#f33c75]">{{ expenses.toFixed(2) }}</p>
       </div>
     </div>
     <div class="flex flex-col flex-1 border rounded-lg bg-white h-20 p-2">
@@ -26,7 +24,6 @@
         <p class="text-gray-400 text-sm">{{ getString("balance") }}</p>
       </div>
       <div class="flex items-center mt-2">
-        <p class="ml-4 text-sm">¥</p>
         <p class="ml-4 text-sm">{{ (income - expenses).toFixed(2) }}</p>
       </div>
     </div>
@@ -35,7 +32,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { i18n } from "../../i18n";
+import { i18n } from "../../../i18n";
 import { invoke } from "@tauri-apps/api/core";
 
 const income = ref(0);
