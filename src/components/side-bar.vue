@@ -21,7 +21,15 @@
         <p class="m-auto ml-1.5">{{ getString("assest") }}</p>
       </div>
     </RouterLink>
-    <RouterLink to="/AddBill" class="no-underline text-black">
+    <RouterLink to="/assets" class="no-underline text-black">
+      <div
+        class="flex items-center justify-center h-10 mt-5 mb-0 mx-5 bg-gray-200 rounded-lg"
+      >
+        <img src="/svg/wallet.svg" class="ml-2.5 mr-1.5" />
+        <p class="m-auto ml-1.5">{{ getString("assest") }}</p>
+      </div>
+    </RouterLink>
+    <RouterLink to="/budget" class="no-underline text-black">
       <div
         class="flex items-center justify-center h-10 mt-5 mb-0 mx-5 bg-gray-200 rounded-lg"
       >
