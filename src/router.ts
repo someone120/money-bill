@@ -1,6 +1,5 @@
 import { createMemoryHistory, createRouter } from "vue-router";
 import Home from "./components/PC/Home/Home.vue";
-import path from "path";
 // import AccountsList from "./components/AddBill/AccountsList.vue";
 import AddBill from "./components/PC/AddBill/AddBill.vue";
 import AddBillAccount from "./components/PC/AddBill/AddBillAccount.vue";
