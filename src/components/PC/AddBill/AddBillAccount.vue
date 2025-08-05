@@ -7,7 +7,7 @@
     >
       <div class="flex items-center">
         <div class="w-6 h-6 mr-2 rounded bg-gray-100 flex items-center justify-center text-xs font-medium text-gray-600">
-          {{ displayAccount.name?.split("::").at(-1)?.substring(0, 1) || "?" }}
+            {{ displayAccount.name?.split("::").slice(-1)[0]?.substring(0, 1) || "?" }}
         </div>
         <span class="text-gray-700">
           {{ displayAccount.name.split("::").slice(-1)[0] || "选择账户" }}
@@ -67,7 +67,7 @@
           class="flex items-center px-3 py-2 hover:bg-gray-50 rounded cursor-pointer"
         >
           <div class="w-6 h-6 mr-3 rounded bg-gray-100 flex items-center justify-center text-xs font-medium text-gray-600">
-            {{ item.name.split("::").at(-1)?.substring(0, 1) || "?" }}
+              {{ item.name.split("::").slice(-1)[0]?.substring(0, 1) || "?" }}
           </div>
           <span class="text-gray-700 text-sm">
             {{ item.name.split("::").slice(-1)[0] }}
