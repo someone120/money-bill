@@ -6,6 +6,8 @@
   "add": "添加",
   "cancel": "取消",
   "balance": "余额",
+  "history": "历史记录",
+  "no_transactions": "暂无交易记录",
   "home": {
     "name": "首页",
     "title": "账单管理",

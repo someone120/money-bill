@@ -6,6 +6,8 @@
   "add": "Add",
   "cancel": "Cancel",
   "balance": "Balance",
+  "history": "History",
+  "no_transactions": "No transactions found",
   "home": {
     "title": "Bill Management",
     "welcome": "Welcome to Bill Management",
