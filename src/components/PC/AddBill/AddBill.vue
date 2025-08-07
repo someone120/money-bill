@@ -34,7 +34,9 @@
         class="grid grid-cols-1 md:grid-cols-2 gap-4 items-end"
       >
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">账户 {{ index + 1 }}</label>
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >账户 {{ index + 1 }}</label
+          >
           <AddBillAccount
             :id="'' + index"
             :displayAccount="account"
@@ -42,7 +44,9 @@
           />
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">金额</label>
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >金额</label
+          >
           <div class="flex gap-2">
             <input
               type="number"
@@ -58,10 +62,7 @@
             >
               ×
             </button>
-            <div
-              v-else
-              class="w-10 h-10 flex-shrink-0"
-            ></div>
+            <div v-else class="w-10 h-10 flex-shrink-0"></div>
           </div>
         </div>
       </div>
@@ -123,7 +124,10 @@ const addTransaction = () => {
       account: account.name,
       amount: parseFloat(amounts.value[index] || "0"),
     }))
-    .filter(item => item.account !== "选择账户" && !isNaN(item.amount) && item.amount !== 0);
+    .filter(
+      (item) =>
+        item.account !== "选择账户" && !isNaN(item.amount) && item.amount !== 0,
+    );
 
   if (validAccounts.length === 0) {
     alert("请至少选择一个账户并输入金额");
@@ -142,15 +146,17 @@ const addTransaction = () => {
   invoke("add_bills", data)
     .then(() => {
       // 重置表单
-      accountList.value = [{
-        name: "选择账户",
-        icon: "/svg/wallet.svg",
-      }];
+      accountList.value = [
+        {
+          name: "选择账户",
+          icon: "/svg/wallet.svg",
+        },
+      ];
       amounts.value = [];
       extra.value = "";
       date.value = new Date();
     })
-    .catch(error => {
+    .catch((error) => {
       console.error("添加交易失败:", error);
       alert("添加交易失败，请重试");
     });
