@@ -3,7 +3,7 @@
     <div class="flex flex-col flex-1 border rounded-lg mr-2 bg-white h-20 p-2">
       <div class="flex items-center">
         <img src="/svg/income.svg" class="w-6 h-6 mr-1" />
-        <p class="text-gray-400 text-sm">{{ getString("income") }}</p>
+        <p class="text-gray-400 text-sm">{{ $t("income") }}</p>
       </div>
       <div class="flex items-center mt-2">
         <p class="ml-4 text-sm text-[#60bf23]">{{ income.toFixed(2) }}</p>
@@ -12,7 +12,7 @@
     <div class="flex flex-col flex-1 border rounded-lg mr-2 bg-white h-20 p-2">
       <div class="flex items-center">
         <img src="/svg/expenses.svg" class="w-6 h-6 mr-1" />
-        <p class="text-gray-400 text-sm">{{ getString("expenses") }}</p>
+        <p class="text-gray-400 text-sm">{{ $t("expenses") }}</p>
       </div>
       <div class="flex items-center mt-2">
         <p class="ml-4 text-sm text-[#f33c75]">{{ expenses.toFixed(2) }}</p>
@@ -21,7 +21,7 @@
     <div class="flex flex-col flex-1 border rounded-lg bg-white h-20 p-2">
       <div class="flex items-center">
         <img src="/svg/balance.svg" class="w-6 h-6 mr-1" />
-        <p class="text-gray-400 text-sm">{{ getString("balance") }}</p>
+        <p class="text-gray-400 text-sm">{{ $t("balance") }}</p>
       </div>
       <div class="flex items-center mt-2">
         <p class="ml-4 text-sm">{{ (income - expenses).toFixed(2) }}</p>
@@ -32,15 +32,10 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { i18n } from "../../../i18n";
 import { invoke } from "@tauri-apps/api/core";
 
 const income = ref(0);
 const expenses = ref(0);
-let i18 = i18n.getInstace("zh_CN");
-function getString(key: string): string {
-  return i18.getString(key);
-}
 
 import { getCurrentInstance } from "vue";
 // function ch(){

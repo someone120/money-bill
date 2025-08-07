@@ -1,9 +1,13 @@
 <template>
   <div class="flex flex-col h-full">
-    <div class="flex items-center justify-between p-4 border-b-2 border-gray-200">
-      <h1 class="text-xl font-semibold">{{ getString("budget") }}</h1>
-      <button class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-        {{ getString("addBudget") }}
+    <div
+      class="flex items-center justify-between p-4 border-b-2 border-gray-200"
+    >
+      <h1 class="text-xl font-semibold">{{ $t("budget") }}</h1>
+      <button
+        class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+      >
+        {{ $t("addBudget") }}
       </button>
     </div>
     <div class="flex-1 p-4">
@@ -12,7 +16,7 @@
         <div class="p-4 bg-white rounded-lg shadow">
           <div class="flex justify-between items-center">
             <div>
-              <h3 class="font-medium">{{ getString("monthlyBudget") }}</h3>
+              <h3 class="font-medium">{{ $t("monthlyBudget") }}</h3>
               <p class="text-gray-600">2024-03</p>
             </div>
             <div class="text-right">
@@ -29,11 +33,4 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { i18n } from "../../../i18n";
-
-const i18 = i18n.getInstace("zh_CN");
-function getString(key: string): string {
-  return i18.getString(key);
-}
-</script> 
+<script setup lang="ts"></script>

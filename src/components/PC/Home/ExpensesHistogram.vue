@@ -1,6 +1,11 @@
 <template>
   <div class="h-72 bg-white rounded-lg w-full">
-    <v-chart class="h-full w-full" :option="option" :loading="loading" autoresize/>
+    <v-chart
+      class="h-full w-full"
+      :option="option"
+      :loading="loading"
+      autoresize
+    />
   </div>
 </template>
 
@@ -17,12 +22,8 @@ import VChart, { THEME_KEY } from "vue-echarts";
 import { ref, provide, Ref } from "vue";
 import { GridComponent } from "echarts/components";
 import { ECBasicOption } from "echarts/types/dist/shared";
-import { i18n } from "../../../i18n";
 import { invoke } from "@tauri-apps/api/core";
-let i18 = i18n.getInstace("zh_CN");
-function getString(key: string): string {
-  return i18.getString(key);
-}
+import { useI18n } from "vue-i18n";
 use([
   GridComponent,
   CanvasRenderer,
@@ -31,7 +32,7 @@ use([
   TooltipComponent,
   LegendComponent,
 ]);
-
+const { t } = useI18n();
 provide(THEME_KEY, "auto");
 let loading = ref<boolean>(false);
 let op = ref({
@@ -52,13 +53,13 @@ let op = ref({
     {
       type: "category",
       data: [
-        getString("mon"),
-        getString("tue"),
-        getString("wed"),
-        getString("thu"),
-        getString("fri"),
-        getString("sat"),
-        getString("sun"),
+        t("mon"),
+        t("tue"),
+        t("wed"),
+        t("thu"),
+        t("fri"),
+        t("sat"),
+        t("sun"),
       ],
       axisTick: {
         alignWithLabel: true,
@@ -72,7 +73,7 @@ let op = ref({
   ],
   series: [
     {
-      name: getString("expenses"),
+      name: t("expenses"),
       type: "bar",
       barWidth: "20%",
       data: [0, 0, 0, 0, 0, 0, 0],
@@ -82,7 +83,7 @@ let op = ref({
       color: "#f33c75",
     },
     {
-      name: getString("income"),
+      name: t("income"),
       type: "bar",
       barWidth: "20%",
       data: [0, 0, 0, 0, 0, 0, 0],
@@ -98,10 +99,8 @@ loading.value = true;
 invoke("get_weekly_income_expenses").then((res: any) => {
   loading.value = false;
   console.log(res["expense"]);
-  
-  op.value.series[0].data = (res["expenses"] as number[]).map((v) => v *-1);
+
+  op.value.series[0].data = (res["expenses"] as number[]).map((v) => v * -1);
   op.value.series[1].data = res["income"];
 });
-
-
 </script>

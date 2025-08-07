@@ -13,7 +13,7 @@
         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
         </svg>
-        {{ getString("income") }}
+        {{ $t("income") }}
       </span>
       <div
         v-if="selectedTab === 'income'"
@@ -34,11 +34,11 @@
         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
         </svg>
-        {{ getString("expenses") }}
+        {{ $t("expenses") }}
       </span>
       <div
         v-if="selectedTab === 'expenses'"
-        class="absolute inset-0 bg-gradient-to-r from-red-50 to-red-100 opacity-50"
+       class="absolute inset-0 bg-gradient-to-r from-red-50 to-red-100 opacity-50"
       ></div>
     </button>
   </div>
@@ -46,16 +46,12 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { i18n } from "../../../i18n";
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n()
 const props = defineProps<{
   selectedTab?: string;
 }>();
-
-let i18 = i18n.getInstace("zh_CN");
-function getString(key: string): string {
-  return i18.getString(key);
-}
 
 const emit = defineEmits(["changeType"]);
 let selectedTab = ref(props.selectedTab || "income");

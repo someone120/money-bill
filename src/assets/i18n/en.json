@@ -1,14 +1,22 @@
 {
   "income": "Income",
   "expenses": "Expenses",
+  "amount": "Amount",
+  "date": "Date",
+  "add": "Add",
+  "cancel": "Cancel",
   "balance": "Balance",
-  "home": "Home",
-  "assest": "Assest",
-  "mon": "Mon",
-  "tue": "Tue",
-  "wed":"Wed",
-  "thu":"Thu",
-  "fri":"Fri",
-  "sat":"Sat",
-  "sun":"Sun"
+  "home": {
+    "title": "Bill Management",
+    "welcome": "Welcome to Bill Management",
+    "recentTransactions": "Recent Transactions",
+    "viewAll": "View All",
+    "addTransaction": "Add Transaction"
+  },
+  "addTransaction": {
+    "title": "Add Transaction",
+    "type": "Type",
+    "category": "Category",
+    "description": "Description"
+  }
 }

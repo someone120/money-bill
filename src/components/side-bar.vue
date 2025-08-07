@@ -9,7 +9,7 @@
       >
         <img src="/svg/home.svg" class="ml-2.5 mr-1.5" />
         <p class="m-auto ml-1.5">
-          {{ getString("home") }}
+          {{ $t("home.name") }}
         </p>
       </div>
     </RouterLink>
@@ -18,7 +18,7 @@
         class="flex items-center justify-center h-10 mt-5 mb-0 mx-5 bg-gray-200 rounded-lg"
       >
         <img src="/svg/wallet.svg" class="ml-2.5 mr-1.5" />
-        <p class="m-auto ml-1.5">{{ getString("assest") }}</p>
+        <p class="m-auto ml-1.5">{{ $t("assest.name") }}</p>
       </div>
     </RouterLink>
     <RouterLink to="/assets" class="no-underline text-black">
@@ -26,7 +26,7 @@
         class="flex items-center justify-center h-10 mt-5 mb-0 mx-5 bg-gray-200 rounded-lg"
       >
         <img src="/svg/wallet.svg" class="ml-2.5 mr-1.5" />
-        <p class="m-auto ml-1.5">{{ getString("assest") }}</p>
+        <p class="m-auto ml-1.5">{{ $t("assest.name") }}</p>
       </div>
     </RouterLink>
     <RouterLink to="/budget" class="no-underline text-black">
@@ -34,7 +34,7 @@
         class="flex items-center justify-center h-10 mt-5 mb-0 mx-5 bg-gray-200 rounded-lg"
       >
         <img src="/svg/wallet.svg" class="ml-2.5 mr-1.5" />
-        <p class="m-auto ml-1.5">{{ getString("assest") }}</p>
+        <p class="m-auto ml-1.5">{{ $t("assest.name") }}</p>
       </div>
     </RouterLink>
   </div>
@@ -42,10 +42,4 @@
 
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
-import { i18n } from "../i18n";
-
-let i18 = i18n.getInstace("zh_CN");
-function getString(key: string): string {
-  return i18.getString(key);
-}
 </script>
