@@ -5,7 +5,7 @@ import SideBar from "./components/side-bar.vue";
 
 <template>
   <div class="h-screen w-screen flex max-w-full">
-    <div class="w-36 bg-white">
+    <div class="bg-white transition-all duration-300 ease-in-out">
       <SideBar />
     </div>
     <div class="flex flex-col flex-1 w-full">

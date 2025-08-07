@@ -2,8 +2,8 @@ use chrono::Datelike;
 use details::Details;
 use rusqlite::params;
 use rusqlite::Connection;
-use rust_decimal::Decimal;
 use rust_decimal::prelude::*;
+use rust_decimal::Decimal;
 use rust_decimal_macros::dec;
 pub mod account;
 pub mod details;
@@ -23,7 +23,7 @@ pub mod transaction;
 ///
 /// * The total income as a `Decimal`.
 pub fn get_month_incomed(conn: &Connection) -> Result<Decimal, Error> {
-  let mut result = Decimal::zero();
+    let mut result = Decimal::zero();
     // Prepare and execute SQL statement to select relevant transactions for the current month.
     let mut stmt = conn
         .prepare("SELECT DETAIL.id,trans_id,account,currency,balance FROM DETAIL INNER JOIN TRANS ON trans_id=TRANS.id and strftime('%Y-%m', time) = strftime('%Y-%m', 'now')")?;
@@ -123,23 +123,25 @@ pub fn get_weekly_expenses(conn: &Connection) -> Result<Vec<f32>, Error> {
     let mut result = vec![0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
     // Prepare and execute SQL statement to select relevant transactions for the current week.
     let mut stmt = conn
-        .prepare("SELECT DETAIL.id,trans_id,account,currency,balance,time FROM DETAIL INNER JOIN TRANS ON trans_id=TRANS.id and strftime('%Y %W', time) = strftime('%Y %W', 'now') ORDER BY TIME")?;
+        .prepare("SELECT DETAIL.id,trans_id,account,currency,balance,time FROM DETAIL INNER JOIN TRANS ON trans_id=TRANS.id and strftime('%Y %W', time) = strftime('%Y %W', 'now') and account like \"expenses%\" ORDER BY TIME ")?;
     // Iterate over the results to calculate weekly expenses.
-    let iter = stmt.query_map(params![], |row: &rusqlite::Row<'_>| -> rusqlite::Result<(Details, String)> {
-        Ok((Details {
-            id: row.get(0)?,
-            trans_id: row.get(1)?,
-            account: row.get(2)?,
-            currency: row.get(3)?,
-            balance: Decimal::from_f32_retain(row.get::<usize, f32>(4)?).unwrap(),
-        }, row.get(5)?))
-    })?;
+    let iter = stmt.query_map(
+        params![],
+        |row: &rusqlite::Row<'_>| -> rusqlite::Result<(Details, String)> {
+            Ok((
+                Details {
+                    id: row.get(0)?,
+                    trans_id: row.get(1)?,
+                    account: row.get(2)?,
+                    currency: row.get(3)?,
+                    balance: Decimal::from_f32_retain(row.get::<usize, f32>(4)?).unwrap(),
+                },
+                row.get(5)?,
+            ))
+        },
+    )?;
     for i in iter {
         let s = i?;
-        // Skip income transactions.
-        if s.0.account.starts_with("income") {
-            continue;
-        }
         // Parse the date and add the balance to the corresponding day of the week.
         let date = chrono::NaiveDateTime::parse_from_str(s.1.as_str(), "%Y-%m-%d %H:%M").unwrap();
         result[date.weekday().num_days_from_monday() as usize] += s.0.balance.to_f32().unwrap();
@@ -161,17 +163,23 @@ pub fn get_weekly_income(conn: &Connection) -> Result<Vec<f32>, Error> {
     let mut result = vec![0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
     // Prepare and execute SQL statement to select relevant transactions for the current week.
     let mut stmt = conn
-        .prepare("SELECT DETAIL.id,trans_id,account,currency,balance,time FROM DETAIL INNER JOIN TRANS ON trans_id=TRANS.id and strftime('%Y %W', time) = strftime('%Y %W', 'now') ORDER BY TIME")?;
+        .prepare("SELECT DETAIL.id,trans_id,account,currency,balance,time FROM DETAIL INNER JOIN TRANS ON trans_id=TRANS.id and strftime('%Y %W', time) = strftime('%Y %W', 'now') and account like \"income%\" ORDER BY TIME ")?;
     // Iterate over the results to calculate weekly income.
-    let iter = stmt.query_map(params![], |row: &rusqlite::Row<'_>| -> rusqlite::Result<(Details, String)> {
-        Ok((Details {
-            id: row.get(0)?,
-            trans_id: row.get(1)?,
-            account: row.get(2)?,
-            currency: row.get(3)?,
-            balance: Decimal::from_f32_retain(row.get::<usize, f32>(4)?).unwrap(),
-        }, row.get(5)?))
-    })?;
+    let iter = stmt.query_map(
+        params![],
+        |row: &rusqlite::Row<'_>| -> rusqlite::Result<(Details, String)> {
+            Ok((
+                Details {
+                    id: row.get(0)?,
+                    trans_id: row.get(1)?,
+                    account: row.get(2)?,
+                    currency: row.get(3)?,
+                    balance: Decimal::from_f32_retain(row.get::<usize, f32>(4)?).unwrap(),
+                },
+                row.get(5)?,
+            ))
+        },
+    )?;
     for i in iter {
         let s = i?;
         // Skip expenses transactions.
@@ -202,8 +210,8 @@ pub fn get_weekly_income(conn: &Connection) -> Result<Vec<f32>, Error> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::database::{account, details, init, transaction};
     use crate::database::recalcute;
+    use crate::database::{account, details, init, transaction};
     use error::Error;
     use rust_decimal_macros::dec;
 
@@ -211,8 +219,8 @@ mod tests {
     fn test_recalcute() -> Result<(), Error> {
         let conn = Connection::open_in_memory()?;
         init::init(&conn)?;
-        account::add_account(&conn, "income::bar", "USD","","")?;
-        account::add_account(&conn, "expenses::foo", "USD","","")?;
+        account::add_account(&conn, "income::bar", "USD", "", "")?;
+        account::add_account(&conn, "expenses::foo", "USD", "", "")?;
 
         let date = chrono::Utc::now();
         let id = transaction::add_transaction(&conn, date, "")?;

@@ -3,9 +3,9 @@ use std::{fs, sync::Mutex};
 use chrono::DateTime;
 use database::{
     account::{self},
-    details::add_details,
+    details::{add_details, get_details_by_trans},
     get_month_expenses, get_month_incomed, get_weekly_expenses, get_weekly_income, init,
-    transaction::add_transaction,
+    transaction::{add_transaction, get_transactions},
 };
 use rusqlite::Connection;
 use rust_decimal::prelude::*;
@@ -120,7 +120,7 @@ fn get_income_expenses(conn: tauri::State<ConnectionWrapper>) -> Vec<f32> {
     // );
     // recalcute(&conn).unwrap();
     let result = vec![
-        get_month_incomed(&conn).unwrap().to_f32().unwrap() * -1.0,
+        get_month_incomed(&conn).unwrap().to_f32().unwrap(),
         get_month_expenses(&conn).unwrap().to_f32().unwrap(),
     ];
     // print!("{}", result);
@@ -161,6 +161,53 @@ fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
 }
 
+#[derive(serde::Serialize)]
+struct TransactionHistoryItem {
+    id: String,
+    date: String,
+    extra: String,
+    details: Vec<TransactionDetail>,
+}
+
+#[derive(serde::Serialize)]
+struct TransactionDetail {
+    id: String,
+    account: String,
+    balance: f32,
+}
+
+#[tauri::command]
+fn get_transaction_history(conn: tauri::State<ConnectionWrapper>) -> Result<Vec<TransactionHistoryItem>, String> {
+    let conn = conn.db.lock().unwrap();
+
+    // Get all transactions
+    let transactions = get_transactions(&conn).map_err(|e| e.to_string())?;
+
+    // For each transaction, get its details
+    let mut history = Vec::new();
+    for transaction in transactions {
+        let details = get_details_by_trans(&conn, &transaction.id).map_err(|e| e.to_string())?;
+
+        let details_serializable: Vec<TransactionDetail> = details
+            .into_iter()
+            .map(|d| TransactionDetail {
+                id: d.id,
+                account: d.account,
+                balance: d.balance.to_f32().unwrap_or(0.0),
+            })
+            .collect();
+
+        history.push(TransactionHistoryItem {
+            id: transaction.id,
+            date: transaction.date,
+            extra: transaction.extra,
+            details: details_serializable,
+        });
+    }
+
+    Ok(history)
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let _ = fs::create_dir(
@@ -191,7 +238,8 @@ pub fn run() {
             get_weekly_income_expenses,
             get_expenses_accounts,
             get_income_accounts,
-            add_bills
+            add_bills,
+            get_transaction_history
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
