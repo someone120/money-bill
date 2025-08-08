@@ -157,6 +157,58 @@ pub fn get_expenses_accounts(conn: &Connection) -> Result<Vec<Account>> {
     Ok(result)
 }
 
+/// Function to get all asset accounts from the database
+///
+/// # Arguments
+/// * `conn` - A reference to the SQLite connection object.
+///
+/// # Returns
+/// * `Result<Vec<Account>>` - On success, returns a vector of Account structs. On failure, returns an error.
+pub fn get_assets_accounts(conn: &Connection) -> Result<Vec<Account>> {
+    // Prepare and execute the SQL query to select all accounts with names starting with 'assets::' from the database
+    let mut stmt = conn.prepare("SELECT * FROM ACCOUNT WHERE name LIKE 'assets::%'")?;
+    let iter = stmt.query_map([], |row| {
+        Ok(Account {
+            name: row.get(0)?,
+            currency: row.get(1)?,
+            balance: Decimal::from_f32_retain(row.get::<usize, f32>(2)?).unwrap(),
+            icon: row.get(3)?,
+            extra: row.get(4)?,
+        })
+    })?;
+    let mut result = Vec::new();
+    for i in iter {
+        result.push(i?)
+    }
+    Ok(result)
+}
+
+/// Function to get all liability accounts from the database
+///
+/// # Arguments
+/// * `conn` - A reference to the SQLite connection object.
+///
+/// # Returns
+/// * `Result<Vec<Account>>` - On success, returns a vector of Account structs. On failure, returns an error.
+pub fn get_liabilities_accounts(conn: &Connection) -> Result<Vec<Account>> {
+    // Prepare and execute the SQL query to select all accounts with names starting with 'liabilities::' from the database
+    let mut stmt = conn.prepare("SELECT * FROM ACCOUNT WHERE name LIKE 'liabilities::%'")?;
+    let iter = stmt.query_map([], |row| {
+        Ok(Account {
+            name: row.get(0)?,
+            currency: row.get(1)?,
+            balance: Decimal::from_f32_retain(row.get::<usize, f32>(2)?).unwrap(),
+            icon: row.get(3)?,
+            extra: row.get(4)?,
+        })
+    })?;
+    let mut result = Vec::new();
+    for i in iter {
+        result.push(i?)
+    }
+    Ok(result)
+}
+
 /// Function to update an account in the database
 ///
 /// # Arguments

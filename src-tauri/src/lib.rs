@@ -97,6 +97,54 @@ fn get_expenses_accounts(conn: tauri::State<ConnectionWrapper>) -> Vec<AccountIc
 }
 
 #[tauri::command]
+/// 获取资产账户列表
+///
+/// 该函数从数据库中获取所有资产账户的信息，包括账户名称、图标和货币类型。
+///
+/// # 参数
+/// - `conn`: 数据库连接状态，使用 `tauri::State` 管理。
+///
+/// # 返回值
+/// 返回包含账户信息的 `AccountIconName` 结构体向量。
+fn get_assets_accounts(conn: tauri::State<ConnectionWrapper>) -> Vec<AccountIconName> {
+    let conn = conn.db.lock().unwrap();
+    let accounts = account::get_assets_accounts(&conn).unwrap();
+    let accounts = accounts
+        .iter()
+        .map(|it| AccountIconName {
+            name: it.name.clone(),
+            icon: it.icon.clone().unwrap_or("".to_string()),
+            currency: it.currency.clone(),
+        })
+        .collect();
+    return accounts;
+}
+
+#[tauri::command]
+/// 获取负债账户列表
+///
+/// 该函数从数据库中获取所有负债账户的信息，包括账户名称、图标和货币类型。
+///
+/// # 参数
+/// - `conn`: 数据库连接状态，使用 `tauri::State` 管理。
+///
+/// # 返回值
+/// 返回包含账户信息的 `AccountIconName` 结构体向量。
+fn get_liabilities_accounts(conn: tauri::State<ConnectionWrapper>) -> Vec<AccountIconName> {
+    let conn = conn.db.lock().unwrap();
+    let accounts = account::get_liabilities_accounts(&conn).unwrap();
+    let accounts = accounts
+        .iter()
+        .map(|it| AccountIconName {
+            name: it.name.clone(),
+            icon: it.icon.clone().unwrap_or("".to_string()),
+            currency: it.currency.clone(),
+        })
+        .collect();
+    return accounts;
+}
+
+#[tauri::command]
 fn get_income_expenses(conn: tauri::State<ConnectionWrapper>) -> Vec<f32> {
     let conn = conn.db.lock().unwrap();
     // let bar_id = account::add_account(&conn, "income::a", "USD").unwrap();
@@ -239,7 +287,9 @@ pub fn run() {
             get_expenses_accounts,
             get_income_accounts,
             add_bills,
-            get_transaction_history
+            get_transaction_history,
+            get_assets_accounts,
+            get_liabilities_accounts
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

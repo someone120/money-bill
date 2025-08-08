@@ -6,8 +6,13 @@
       class="w-full px-3 py-2 border border-gray-300 rounded-md cursor-pointer hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white flex items-center justify-between"
     >
       <div class="flex items-center">
-        <div class="w-6 h-6 mr-2 rounded bg-gray-100 flex items-center justify-center text-xs font-medium text-gray-600">
-            {{ displayAccount.name?.split("::").slice(-1)[0]?.substring(0, 1) || "?" }}
+        <div
+          class="w-6 h-6 mr-2 rounded bg-gray-100 flex items-center justify-center text-xs font-medium text-gray-600"
+        >
+          {{
+            displayAccount.name?.split("::").slice(-1)[0]?.substring(0, 1) ||
+            "?"
+          }}
         </div>
         <span class="text-gray-700">
           {{ displayAccount.name.split("::").slice(-1)[0] || "选择账户" }}
@@ -20,7 +25,12 @@
         stroke="currentColor"
         viewBox="0 0 24 24"
       >
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M19 9l-7 7-7-7"
+        ></path>
       </svg>
     </div>
 
@@ -37,7 +47,7 @@
             'flex-1 px-4 py-2 text-sm font-medium',
             currentType === 'income'
               ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50'
-              : 'text-gray-500 hover:text-gray-700'
+              : 'text-gray-500 hover:text-gray-700',
           ]"
         >
           收入
@@ -48,16 +58,41 @@
             'flex-1 px-4 py-2 text-sm font-medium',
             currentType === 'expenses'
               ? 'text-red-600 border-b-2 border-red-600 bg-red-50'
-              : 'text-gray-500 hover:text-gray-700'
+              : 'text-gray-500 hover:text-gray-700',
           ]"
         >
           支出
+        </button>
+        <button
+          @click="currentType = 'assets'"
+          :class="[
+            'flex-1 px-4 py-2 text-sm font-medium',
+            currentType === 'assets'
+              ? 'text-red-600 border-b-2 border-red-600 bg-red-50'
+              : 'text-gray-500 hover:text-gray-700',
+          ]"
+        >
+          资产
+        </button>
+        <button
+          @click="currentType = 'liabilities'"
+          :class="[
+            'flex-1 px-4 py-2 text-sm font-medium',
+            currentType === 'liabilities'
+              ? 'text-red-600 border-b-2 border-red-600 bg-red-50'
+              : 'text-gray-500 hover:text-gray-700',
+          ]"
+        >
+          负债
         </button>
       </div>
 
       <!-- 账户列表 -->
       <div class="max-h-48 overflow-y-auto p-2">
-        <div v-if="items.length === 0" class="text-gray-500 text-sm text-center py-4">
+        <div
+          v-if="items.length === 0"
+          class="text-gray-500 text-sm text-center py-4"
+        >
           暂无账户
         </div>
         <div
@@ -66,8 +101,10 @@
           @click="selectAccount(item)"
           class="flex items-center px-3 py-2 hover:bg-gray-50 rounded cursor-pointer"
         >
-          <div class="w-6 h-6 mr-3 rounded bg-gray-100 flex items-center justify-center text-xs font-medium text-gray-600">
-              {{ item.name.split("::").slice(-1)[0]?.substring(0, 1) || "?" }}
+          <div
+            class="w-6 h-6 mr-3 rounded bg-gray-100 flex items-center justify-center text-xs font-medium text-gray-600"
+          >
+            {{ item.name.split("::").slice(-1)[0]?.substring(0, 1) || "?" }}
           </div>
           <span class="text-gray-700 text-sm">
             {{ item.name.split("::").slice(-1)[0] }}
@@ -77,11 +114,7 @@
     </div>
 
     <!-- 遮罩层 -->
-    <div
-      v-if="isOpen"
-      @click="closeDropdown"
-      class="fixed inset-0 z-40"
-    ></div>
+    <div v-if="isOpen" @click="closeDropdown" class="fixed inset-0 z-40"></div>
   </div>
 </template>
 
@@ -118,31 +151,48 @@ watchEffect(() => {
   if (!isOpen.value) return;
 
   items.value = [];
-  const method = currentType.value === "income" ? "get_income_accounts" : "get_expenses_accounts";
+  let method = "get_income_accounts";
+  
+  switch (currentType.value) {
+    case "income":
+      method = "get_income_accounts";
+      break;
+    case "expenses":
+      method = "get_expenses_accounts";
+      break;
+    case "assets":
+      method = "get_assets_accounts";
+      break;
+    case "liabilities":
+      method = "get_liabilities_accounts";
+      break;
+  }
 
-  invoke(method).then((res) => {
-    const accounts = res as [{ name: string; icon: string }];
-    items.value = accounts.map((it) => ({
-      icon: it.icon,
-      name: it.name,
-    }));
-  }).catch(() => {
-    items.value = [];
-  });
+  invoke(method)
+    .then((res) => {
+      const accounts = res as [{ name: string; icon: string }];
+      items.value = accounts.map((it) => ({
+        icon: it.icon,
+        name: it.name,
+      }));
+    })
+    .catch(() => {
+      items.value = [];
+    });
 });
 
 // 键盘事件
 const handleEscape = (event: KeyboardEvent) => {
-  if (event.key === 'Escape' && isOpen.value) {
+  if (event.key === "Escape" && isOpen.value) {
     closeDropdown();
   }
 };
 
 onMounted(() => {
-  document.addEventListener('keydown', handleEscape);
+  document.addEventListener("keydown", handleEscape);
 });
 
 onUnmounted(() => {
-  document.removeEventListener('keydown', handleEscape);
+  document.removeEventListener("keydown", handleEscape);
 });
 </script>
