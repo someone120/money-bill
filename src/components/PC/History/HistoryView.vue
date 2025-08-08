@@ -35,27 +35,48 @@
         <!-- Collapsed view: Show expenses summary -->
         <div v-if="collapsedTransactions[transaction.id]"></div>
 
-        <!-- Expanded view: Show all details -->
-        <div v-else class="grid grid-cols-12 gap-2">
-          <div
-            v-for="detail in transaction.details"
-            :key="detail.id"
-            class="col-span-6 flex items-center"
-          >
-            <img
-              :src="getAccountIcon(detail.account)"
-              class="w-6 h-6 mr-2"
-              :alt="detail.account"
-            />
-            <div class="flex flex-col">
-              <div class="text-sm font-medium">{{ detail.account }}</div>
-              <div
-                :class="{
-                  'text-green-600': detail.balance > 0,
-                  'text-red-600': detail.balance < 0,
-                }"
-              >
-                {{ formatAmount(detail.balance) }}
+        <!-- Expanded view: Show all details in two columns -->
+        <div v-else class="grid grid-cols-2 gap-4">
+          <!-- Income column (positive balance) -->
+          <div class="border-r pr-2">
+            <div class="text-green-600 font-medium mb-2">{{ $t("income") }}</div>
+            <div
+              v-for="detail in transaction.details.filter(d => d.balance > 0)"
+              :key="detail.id"
+              class="flex items-center mb-2"
+            >
+              <img
+                :src="getAccountIcon(detail.account)"
+                class="w-6 h-6 mr-2"
+                :alt="detail.account"
+              />
+              <div class="flex flex-col">
+                <div class="text-sm font-medium">{{ detail.account }}</div>
+                <div class="text-green-600">
+                  {{ formatAmount(detail.balance) }}
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Expenses column (negative balance) -->
+          <div class="pl-2">
+            <div class="text-red-600 font-medium mb-2">{{ $t("expenses") }}</div>
+            <div
+              v-for="detail in transaction.details.filter(d => d.balance < 0)"
+              :key="detail.id"
+              class="flex items-center mb-2"
+            >
+              <img
+                :src="getAccountIcon(detail.account)"
+                class="w-6 h-6 mr-2"
+                :alt="detail.account"
+              />
+              <div class="flex flex-col">
+                <div class="text-sm font-medium">{{ detail.account }}</div>
+                <div class="text-red-600">
+                  {{ formatAmount(Math.abs(detail.balance)) }}
+                </div>
               </div>
             </div>
           </div>
@@ -131,8 +152,8 @@ const formatAmount = (amount: number) => {
 // Calculate total expenses
 const getTotalExpenses = (details: TransactionDetail[]) => {
   return details
-    .filter((detail) => detail.account.split("::")[0] === "income")
-    .reduce((sum, detail) => sum + detail.balance, 0);
+    .filter((detail) => detail.account.split("::")[0] === "expenses")
+    .reduce((sum, detail) => sum - detail.balance, 0);
 };
 
 onMounted(() => {
