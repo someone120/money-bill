@@ -1,40 +1,40 @@
 <template>
   <div class="flex flex-col h-full" :class="isCollapsed ? 'w-16' : 'w-36'">
-    <div class="flex h-16 border-b-2 border-gray-200">
-      <p v-if="!isCollapsed" class="m-auto">Money Bill</p>
-      <button
-        @click="toggleCollapse"
-        class="m-auto p-1 rounded-full hover:bg-gray-200"
-        :class="isCollapsed ? 'ml-4' : 'ml-auto mr-2'"
-      >
-        <svg
-          v-if="isCollapsed"
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5"
-          viewBox="0 0 20 20"
-          fill="currentColor"
+      <div class="flex h-16 border-b-2 border-gray-200">
+        <p v-if="!isCollapsed" class="m-auto">{{ $t("app.name") }}</p>
+        <button
+          @click="toggleCollapse"
+          class="m-auto p-1 rounded-full hover:bg-gray-200"
+          :class="isCollapsed ? 'ml-4' : 'ml-auto mr-2'"
         >
-          <path
-            fill-rule="evenodd"
-            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-            clip-rule="evenodd"
-          />
-        </svg>
-        <svg
-          v-else
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-            clip-rule="evenodd"
-          />
-        </svg>
-      </button>
-    </div>
+          <svg
+            v-if="isCollapsed"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <svg
+            v-else
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </button>
+      </div>
     <RouterLink
       to="/"
       class="no-underline text-black"

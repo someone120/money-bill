@@ -17,7 +17,7 @@
           <div class="flex justify-between items-center">
             <div>
               <h3 class="font-medium">{{ $t("monthlyBudget") }}</h3>
-              <p class="text-gray-600">2024-03</p>
+              <p class="text-gray-600">{{ $t("budgetDate") }}</p>
             </div>
             <div class="text-right">
               <p class="text-lg font-semibold">¥5,000</p>

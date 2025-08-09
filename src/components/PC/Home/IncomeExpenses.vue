@@ -3,7 +3,7 @@
     <div class="flex flex-col flex-1 border rounded-lg mr-2 bg-white h-20 p-2">
       <div class="flex items-center">
         <img src="/svg/income.svg" class="w-6 h-6 mr-1" />
-        <p class="text-gray-400 text-sm">{{ $t("income") }}</p>
+        <p class="text-gray-400 text-sm">{{ $t("home.income") }}</p>
       </div>
       <div class="flex items-center mt-2">
         <p class="ml-4 text-sm text-[#60bf23]">{{ income.toFixed(2) }}</p>

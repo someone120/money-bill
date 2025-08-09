@@ -39,7 +39,7 @@
         <div v-else class="grid grid-cols-2 gap-4">
           <!-- Income column (positive balance) -->
           <div class="border-r pr-2">
-            <div class="text-green-600 font-medium mb-2">{{ $t("income") }}</div>
+            <div class="text-green-600 font-medium mb-2">{{ $t("addBillAccount.income") }}</div>
             <div
               v-for="detail in transaction.details.filter(d => d.balance > 0)"
               :key="detail.id"

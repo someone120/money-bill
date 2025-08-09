@@ -8,17 +8,62 @@
   "balance": "Balance",
   "history": "History",
   "no_transactions": "No transactions found",
+  "app": {
+    "name": "Money Bill"
+  },
   "home": {
+    "name": "Home",
     "title": "Bill Management",
     "welcome": "Welcome to Bill Management",
     "recentTransactions": "Recent Transactions",
     "viewAll": "View All",
-    "addTransaction": "Add Transaction"
+    "addTransaction": "Add Transaction",
+    "income": "Income"
   },
   "addTransaction": {
     "title": "Add Transaction",
     "type": "Type",
     "category": "Category",
     "description": "Description"
-  }
+  },
+  "addBill": {
+    "dateLabel": "Date",
+    "datePlaceholder": "Please select date",
+    "remarkLabel": "Remark",
+    "remarkPlaceholder": "Please enter remark",
+    "accountLabel": "Account",
+    "amountLabel": "Amount",
+    "amountPlaceholder": "Please enter amount",
+    "deleteAccount": "Delete Account",
+    "addTransaction": "Add Transaction",
+    "basicInfo": "Basic Information",
+    "accountList": "Account and Amount List",
+    "account": "Account",
+    "amount": "Amount",
+    "deleteAccountTitle": "Delete Account",
+    "atLeastOneAccount": "Please select at least one account and enter an amount",
+    "addTransactionFailed": "Failed to add transaction, please try again"
+  },
+  "assets": {
+    "name": "Assets",
+    "overview": "Assets Overview",
+    "expandAll": "Expand All",
+    "collapseAll": "Collapse All",
+    "incomeAccounts": "Income Accounts",
+    "expenseAccounts": "Expense Accounts",
+    "assetAccounts": "Asset Accounts",
+    "liabilityAccounts": "Liability Accounts",
+    "allAccounts": "All Accounts",
+    "loadError": "Failed to load assets data"
+  },
+  "addBillAccount": {
+    "selectAccount": "Select Account",
+    "noAccounts": "No Accounts",
+    "addAccountPrompt": "Please add accounts of the relevant type first",
+    "income": "Income",
+    "expenses": "Expenses",
+    "assets": "Assets",
+    "liabilities": "Liabilities"
+  },
+  "budgetDate": "2024-03"
 }

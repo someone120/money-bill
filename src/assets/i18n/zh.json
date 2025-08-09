@@ -8,13 +8,17 @@
   "balance": "余额",
   "history": "历史记录",
   "no_transactions": "暂无交易记录",
+  "app": {
+    "name": "金钱账单"
+  },
   "home": {
     "name": "首页",
     "title": "账单管理",
     "welcome": "欢迎使用账单管理",
     "recentTransactions": "最近交易",
     "viewAll": "查看全部",
-    "addTransaction": "添加交易"
+    "addTransaction": "添加交易",
+    "income": "收入"
   },
   "addTransaction": {
     "title": "添加交易",
@@ -22,8 +26,47 @@
     "category": "分类",
     "description": "描述"
   },
+  "addBill": {
+    "dateLabel": "日期",
+    "datePlaceholder": "请选择日期",
+    "remarkLabel": "备注",
+    "remarkPlaceholder": "请输入备注",
+    "accountLabel": "账户",
+    "amountLabel": "金额",
+    "amountPlaceholder": "请输入金额",
+    "deleteAccount": "删除账户",
+    "addTransaction": "添加交易",
+    "basicInfo": "基本信息",
+    "accountList": "账户和金额列表",
+    "account": "账户",
+    "amount": "金额",
+    "deleteAccountTitle": "删除账户",
+    "atLeastOneAccount": "请至少选择一个账户并输入金额",
+    "addTransactionFailed": "添加交易失败，请重试"
+  },
+  "assets": {
+    "name": "资产",
+    "overview": "资产概览",
+    "expandAll": "展开全部",
+    "collapseAll": "收起全部",
+    "incomeAccounts": "收入账户",
+    "expenseAccounts": "支出账户",
+    "assetAccounts": "储蓄账户",
+    "liabilityAccounts": "负债账户",
+    "allAccounts": "全部账户",
+    "loadError": "加载资产数据失败"
+  },
   "assest": {
     "name": "资产"
+  },
+  "addBillAccount": {
+    "selectAccount": "选择账户",
+    "noAccounts": "暂无账户",
+    "addAccountPrompt": "请先添加相关类型的账户",
+    "income": "收入",
+    "expenses": "支出",
+    "assets": "资产",
+    "liabilities": "负债"
   },
   "mon": "周一",
   "tue": "周二",
@@ -34,5 +77,6 @@
   "sun": "周日",
   "budget": "预算",
   "addBudget": "添加预算",
-  "monthlyBudget": "月度预算"
+  "monthlyBudget": "月度预算",
+  "budgetDate": "2024-03"
 }

@@ -63,18 +63,18 @@ function changeType(type: string) {
 </script>
 
 <style scoped>
-/* 按钮点击效果 */
+/* Button click effect */
 button:active {
   transform: scale(0.98);
 }
 
-/* 聚焦效果 */
+/* Focus effect */
 button:focus {
   outline: none;
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
 }
 
-/* 确保图标和文字对齐 */
+/* Ensure icon and text alignment */
 .flex.items-center.justify-center {
   gap: 0.5rem;
 }

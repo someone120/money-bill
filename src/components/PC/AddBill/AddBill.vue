@@ -1,12 +1,12 @@
 <template>
   <div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-sm">
-    <!-- 基本信息 -->
+    <!-- {{ $t("addBill.basicInfo") }} -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">日期</label>
+        <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t("addBill.dateLabel") }}</label>
         <VueDatePicker
           v-model="date"
-          placeholder="请选择日期"
+          :placeholder="$t('addBill.datePlaceholder')"
           locale="zh-CN"
           class="w-full"
           :enable-time-picker="false"
@@ -16,17 +16,17 @@
         />
       </div>
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">备注</label>
+        <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t("addBill.remarkLabel") }}</label>
         <input
           type="text"
           v-model="extra"
-          placeholder="请输入备注"
+          :placeholder="$t('addBill.remarkPlaceholder')"
           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
     </div>
 
-    <!-- 账户和金额列表 -->
+    <!-- {{ $t("addBill.accountList") }} -->
     <div class="space-y-4 mb-6">
       <div
         v-for="(account, index) in accountList"
@@ -35,7 +35,7 @@
       >
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2"
-            >账户 {{ index + 1 }}</label
+            >{{ $t("addBill.account") }} {{ index + 1 }}</label
           >
           <AddBillAccount
             :id="'' + index"
@@ -45,20 +45,20 @@
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2"
-            >金额</label
+            >{{ $t("addBill.amount") }}</label
           >
           <div class="flex gap-2">
             <input
               type="number"
               v-model="amounts[index]"
-              placeholder="请输入金额"
+              :placeholder="$t('addBill.amountPlaceholder')"
               class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
             <button
               v-if="index > 0"
               @click="deleteAccount(index)"
               class="w-10 h-10 flex items-center justify-center text-red-600 hover:bg-red-50 rounded-md transition-colors flex-shrink-0"
-              title="删除账户"
+              :title="$t('addBill.deleteAccountTitle')"
             >
               ×
             </button>
@@ -74,7 +74,7 @@
         @click="addTransaction"
         class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
       >
-        添加交易
+        {{ $t("addBill.addTransaction") }}
       </button>
     </div>
   </div>
@@ -87,10 +87,13 @@ import "@vuepic/vue-datepicker/dist/main.css";
 import AddBillAccount from "./AddBillAccount.vue";
 import { AccountItem } from "./types";
 import { invoke } from "@tauri-apps/api/core";
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const accountList: Ref<AccountItem[]> = ref([
   {
-    name: "选择账户",
+    name: t("addBillAccount.selectAccount"),
     icon: "/svg/wallet.svg",
   },
 ]);
@@ -106,7 +109,7 @@ const changeAccount = (account: AccountItem, index: string) => {
   // 如果是最后一个账户被选择了，自动添加新的空账户
   if (idx === accountList.value.length - 1) {
     accountList.value.push({
-      name: "选择账户",
+      name: t("addBillAccount.selectAccount"),
       icon: "/svg/wallet.svg",
     });
   }
@@ -126,11 +129,11 @@ const addTransaction = () => {
     }))
     .filter(
       (item) =>
-        item.account !== "选择账户" && !isNaN(item.amount) && item.amount !== 0,
+        item.account !== t("addBillAccount.selectAccount") && !isNaN(item.amount) && item.amount !== 0,
     );
 
   if (validAccounts.length === 0) {
-    alert("请至少选择一个账户并输入金额");
+    alert(t("addBill.atLeastOneAccount"));
     return;
   }
 
@@ -148,7 +151,7 @@ const addTransaction = () => {
       // 重置表单
       accountList.value = [
         {
-          name: "选择账户",
+          name: t("addBillAccount.selectAccount"),
           icon: "/svg/wallet.svg",
         },
       ];
@@ -158,7 +161,7 @@ const addTransaction = () => {
     })
     .catch((error) => {
       console.error("添加交易失败:", error);
-      alert("添加交易失败，请重试");
+      alert(t("addBill.addTransactionFailed"));
     });
 };
 </script>

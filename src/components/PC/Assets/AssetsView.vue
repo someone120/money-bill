@@ -1,22 +1,22 @@
 <template>
   <div class="p-4">
     <div class="flex justify-between items-center mb-4">
-      <h1 class="text-2xl font-bold">资产概览</h1>
+      <h1 class="text-2xl font-bold">{{ $t("assets.overview") }}</h1>
       <div class="flex space-x-2">
         <button @click="expandAll" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">
-          展开全部
+          {{ $t("assets.expandAll") }}
         </button>
         <button @click="collapseAll" class="px-3 py-1 bg-gray-500 text-white rounded hover:bg-gray-600 text-sm">
-          收起全部
+          {{ $t("assets.collapseAll") }}
         </button>
       </div>
     </div>
 
     <!-- 路径导航 -->
     <div class="mb-4 text-sm text-gray-500">
-      <span>资产 » </span>
+      <span>{{ $t("assest.name") }} » </span>
       <span v-if="currentPath">{{ currentPath }}</span>
-      <span v-else>全部账户</span>
+      <span v-else>{{ $t("assets.allAccounts") }}</span>
     </div>
 
     <div class="bg-white rounded-lg shadow p-4">
@@ -30,7 +30,7 @@
         <!-- 收入账户 -->
         <div class="mb-6" v-if="incomeAccounts.length > 0">
           <div @click="toggleSection('income')" class="flex items-center cursor-pointer mb-3">
-            <h2 class="text-lg font-semibold text-green-600">收入账户</h2>
+            <h2 class="text-lg font-semibold text-green-600">{{ $t("assets.incomeAccounts") }}</h2>
             <div class="ml-2 text-gray-500">
               <svg v-if="sectionExpanded.income" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -52,7 +52,7 @@
         <!-- 支出账户 -->
         <div class="mb-6" v-if="expenseAccounts.length > 0">
           <div @click="toggleSection('expenses')" class="flex items-center cursor-pointer mb-3">
-            <h2 class="text-lg font-semibold text-red-600">支出账户</h2>
+            <h2 class="text-lg font-semibold text-red-600">{{ $t("assets.expenseAccounts") }}</h2>
             <div class="ml-2 text-gray-500">
               <svg v-if="sectionExpanded.expenses" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -74,7 +74,7 @@
         <!-- 储蓄账户 -->
         <div class="mb-6" v-if="assetAccounts.length > 0">
           <div @click="toggleSection('assets')" class="flex items-center cursor-pointer mb-3">
-            <h2 class="text-lg font-semibold text-blue-600">储蓄账户</h2>
+            <h2 class="text-lg font-semibold text-blue-600">{{ $t("assets.assetAccounts") }}</h2>
             <div class="ml-2 text-gray-500">
               <svg v-if="sectionExpanded.assets" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -96,7 +96,7 @@
         <!-- 负债账户 -->
         <div class="mb-6" v-if="liabilityAccounts.length > 0">
           <div @click="toggleSection('liabilities')" class="flex items-center cursor-pointer mb-3">
-            <h2 class="text-lg font-semibold text-orange-600">负债账户</h2>
+            <h2 class="text-lg font-semibold text-orange-600">{{ $t("assets.liabilityAccounts") }}</h2>
             <div class="ml-2 text-gray-500">
               <svg v-if="sectionExpanded.liabilities" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>

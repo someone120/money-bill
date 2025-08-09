@@ -15,7 +15,7 @@
           }}
         </div>
         <span class="text-gray-700">
-          {{ displayAccount.name.split("::").slice(-1)[0] || "选择账户" }}
+          {{ displayAccount.name.split("::").slice(-1)[0] || t('addBillAccount.selectAccount') }}
         </span>
       </div>
       <svg
@@ -50,7 +50,7 @@
               : 'text-gray-500 hover:text-gray-700',
           ]"
         >
-          收入
+          {{ t('addBillAccount.income') }}
         </button>
         <button
           @click="currentType = 'expenses'"
@@ -61,7 +61,7 @@
               : 'text-gray-500 hover:text-gray-700',
           ]"
         >
-          支出
+          {{ t('addBillAccount.expenses') }}
         </button>
         <button
           @click="currentType = 'assets'"
@@ -72,7 +72,7 @@
               : 'text-gray-500 hover:text-gray-700',
           ]"
         >
-          资产
+          {{ t('addBillAccount.assets') }}
         </button>
         <button
           @click="currentType = 'liabilities'"
@@ -83,7 +83,7 @@
               : 'text-gray-500 hover:text-gray-700',
           ]"
         >
-          负债
+          {{ t('addBillAccount.liabilities') }}
         </button>
       </div>
 
@@ -93,7 +93,7 @@
           v-if="items.length === 0"
           class="text-gray-500 text-sm text-center py-4"
         >
-          暂无账户
+          {{ t('addBillAccount.noAccounts') }}
         </div>
         <div
           v-for="item in items"
@@ -120,8 +120,11 @@
 
 <script setup lang="ts">
 import { ref, watchEffect, onMounted, onUnmounted } from "vue";
+import { useI18n } from 'vue-i18n';
 import type { AccountItem } from "./types";
 import { invoke } from "@tauri-apps/api/core";
+
+const { t } = useI18n();
 
 const emit = defineEmits(["changeAccount"]);
 const props = defineProps<{
