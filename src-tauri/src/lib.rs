@@ -4,7 +4,7 @@ use chrono::DateTime;
 use database::{
     account::{self},
     details::{add_details, get_details_by_trans},
-    get_month_expenses, get_month_incomed, get_weekly_expenses, get_weekly_income, init,
+    get_month_expenses, get_month_incomed, get_weekly_expenses, get_weekly_income, init, recalcute,
     transaction::{add_transaction, get_transactions},
 };
 use rusqlite::Connection;
@@ -21,6 +21,7 @@ struct ConnectionWrapper {
 /// 添加账单信息到数据库
 ///
 /// 该函数接收一个数据库连接状态、账户金额列表、日期和额外信息，并将这些信息添加到数据库中。
+/// 同时会更新相关账户的余额。
 ///
 /// # 参数
 /// - `conn`: 数据库连接状态，使用 `tauri::State` 管理。
@@ -41,9 +42,17 @@ async fn add_bills(
     let conn = conn.db.lock().unwrap();
     let utc_datetime: DateTime<chrono::Utc> = DateTime::from_timestamp(date, 0).unwrap();
     let trans_id = add_transaction(&conn, utc_datetime, &extra).unwrap();
+    
+    // 添加交易详情并更新账户余额
     for account_amount in account_amounts {
         let amount = Decimal::from_f32_retain(account_amount.amount).unwrap();
         let _ = add_details(&conn, &trans_id, &account_amount.account, &currency, amount);
+        
+        // 更新账户余额
+        if let Err(e) = account::update_account_balance(&conn, &account_amount.account, amount) {
+            eprintln!("Failed to update account balance for {}: {}", account_amount.account, e);
+            return Err(format!("Failed to update account balance: {}", e));
+        }
     }
     println!("{}", date);
     Ok(())
@@ -225,7 +234,9 @@ struct TransactionDetail {
 }
 
 #[tauri::command]
-fn get_transaction_history(conn: tauri::State<ConnectionWrapper>) -> Result<Vec<TransactionHistoryItem>, String> {
+fn get_transaction_history(
+    conn: tauri::State<ConnectionWrapper>,
+) -> Result<Vec<TransactionHistoryItem>, String> {
     let conn = conn.db.lock().unwrap();
 
     // Get all transactions

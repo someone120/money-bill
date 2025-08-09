@@ -231,6 +231,31 @@ pub fn update_account(conn: &Connection, account: &Account) -> Result<()> {
     )?;
     Ok(())
 }
+
+/// Function to update an account's balance by adding a delta amount
+///
+/// # Arguments
+/// * `conn` - A reference to the SQLite connection object.
+/// * `account_name` - The name of the account to update.
+/// * `delta` - The amount to add to the current balance (can be negative).
+///
+/// # Returns
+/// * `Result<()>` - On success, returns Ok(()). On failure, returns an error.
+pub fn update_account_balance(conn: &Connection, account_name: &str, delta: Decimal) -> Result<()> {
+    // First, get the current account information
+    let mut accounts = read_account(conn, account_name)?;
+    if accounts.is_empty() {
+        return Err(rusqlite::Error::QueryReturnedNoRows.into());
+    }
+    
+    // Update the balance by adding the delta
+    let mut account = accounts.remove(0);
+    account.balance += delta;
+    
+    // Update the account in the database
+    update_account(conn, &account)?;
+    Ok(())
+}
 #[cfg(test)]
 mod tests {
     use crate::database::init::init;
