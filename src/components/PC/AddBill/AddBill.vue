@@ -1,93 +1,115 @@
 <template>
-  <div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-sm">
-    <!-- {{ $t("addBill.basicInfo") }} -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t("addBill.dateLabel") }}</label>
-        <VueDatePicker
-          v-model="date"
-          :placeholder="$t('addBill.datePlaceholder')"
-          locale="zh-CN"
-          class="w-full"
-          :enable-time-picker="false"
-          :clearable="false"
-          :calendar-cell-class-name="false"
-          :input-class-name="'dp-custom-input'"
-        />
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t("addBill.remarkLabel") }}</label>
-        <input
-          type="text"
+  <v-container>
+    <!-- Basic Info -->
+    <v-row>
+      <v-col cols="12" md="6">
+        <label class="text-caption text-grey-darken-1 mb-1 d-block">{{ $t("addBill.dateLabel") }}</label>
+        <v-menu
+          v-model="dateMenu"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          min-width="auto"
+        >
+          <template v-slot:activator="{ props }">
+            <v-text-field
+              v-model="formattedDate"
+              :placeholder="$t('addBill.datePlaceholder')"
+              prepend-inner-icon="mdi-calendar"
+              readonly
+              v-bind="props"
+              variant="outlined"
+              density="comfortable"
+              hide-details
+            ></v-text-field>
+          </template>
+          <v-date-picker
+            v-model="date"
+            color="primary"
+            @update:modelValue="dateMenu = false"
+          ></v-date-picker>
+        </v-menu>
+      </v-col>
+      <v-col cols="12" md="6">
+        <label class="text-caption text-grey-darken-1 mb-1 d-block">{{ $t("addBill.remarkLabel") }}</label>
+        <v-text-field
           v-model="extra"
           :placeholder="$t('addBill.remarkPlaceholder')"
-          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        />
-      </div>
+          variant="outlined"
+          density="comfortable"
+          hide-details
+        ></v-text-field>
+      </v-col>
+    </v-row>
+
+    <v-divider class="my-4"></v-divider>
+
+    <!-- Account List -->
+    <div v-for="(account, index) in accountList" :key="index" class="mb-4">
+      <v-row align="center">
+        <v-col cols="12" md="6">
+           <label class="text-caption text-grey-darken-1 mb-1 d-block">
+             {{ $t("addBill.account") }} {{ index + 1 }}
+           </label>
+           <AddBillAccount
+             :id="'' + index"
+             :displayAccount="account"
+             @changeAccount="changeAccount"
+           />
+        </v-col>
+        <v-col cols="12" md="6">
+           <label class="text-caption text-grey-darken-1 mb-1 d-block">{{ $t("addBill.amount") }}</label>
+           <div class="d-flex align-center">
+             <v-text-field
+               v-model="amounts[index]"
+               :placeholder="$t('addBill.amountPlaceholder')"
+               type="number"
+               variant="outlined"
+               density="compact"
+               hide-details
+               prefix="¥"
+               class="flex-grow-1"
+             ></v-text-field>
+             
+             <v-btn
+               v-if="index > 0"
+               icon="mdi-delete"
+               variant="text"
+               color="error"
+               class="ml-2"
+               @click="deleteAccount(index)"
+               :title="$t('addBill.deleteAccountTitle')"
+             ></v-btn>
+           </div>
+        </v-col>
+      </v-row>
     </div>
 
-    <!-- {{ $t("addBill.accountList") }} -->
-    <div class="space-y-4 mb-6">
-      <div
-        v-for="(account, index) in accountList"
-        :key="index"
-        class="grid grid-cols-1 md:grid-cols-2 gap-4 items-end"
-      >
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2"
-            >{{ $t("addBill.account") }} {{ index + 1 }}</label
-          >
-          <AddBillAccount
-            :id="'' + index"
-            :displayAccount="account"
-            @changeAccount="changeAccount"
-          />
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2"
-            >{{ $t("addBill.amount") }}</label
-          >
-          <div class="flex gap-2">
-            <input
-              type="number"
-              v-model="amounts[index]"
-              :placeholder="$t('addBill.amountPlaceholder')"
-              class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-            <button
-              v-if="index > 0"
-              @click="deleteAccount(index)"
-              class="w-10 h-10 flex items-center justify-center text-red-600 hover:bg-red-50 rounded-md transition-colors flex-shrink-0"
-              :title="$t('addBill.deleteAccountTitle')"
-            >
-              ×
-            </button>
-            <div v-else class="w-10 h-10 flex-shrink-0"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 操作按钮 -->
-    <div class="flex justify-end">
-      <button
-        @click="addTransaction"
-        class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
-      >
-        {{ $t("addBill.addTransaction") }}
-      </button>
-    </div>
-  </div>
+    <!-- Actions -->
+    <v-row class="mt-4">
+      <v-spacer></v-spacer>
+      <v-col cols="auto">
+        <v-btn
+          color="primary"
+          @click="addTransaction"
+          prepend-icon="mdi-check"
+          elevation="2"
+        >
+          {{ $t("addBill.addTransaction") }}
+        </v-btn>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts" setup>
-import { Ref, ref } from "vue";
-import VueDatePicker from "@vuepic/vue-datepicker";
-import "@vuepic/vue-datepicker/dist/main.css";
+import { Ref, ref, computed } from "vue";
+// import VueDatePicker from "@vuepic/vue-datepicker"; // Removed
+// import "@vuepic/vue-datepicker/dist/main.css"; // Removed
 import AddBillAccount from "./AddBillAccount.vue";
 import { AccountItem } from "./types";
 import { invoke } from "@tauri-apps/api/core";
 import { useI18n } from 'vue-i18n';
+import { format } from 'date-fns';
 
 const { t } = useI18n();
 
@@ -99,6 +121,12 @@ const accountList: Ref<AccountItem[]> = ref([
 ]);
 const amounts = ref([]);
 const date = ref(new Date());
+const dateMenu = ref(false);
+
+const formattedDate = computed(() => {
+  return date.value ? format(date.value, 'yyyy-MM-dd') : '';
+});
+
 const extra = ref("");
 const currency = ref("");
 
@@ -133,7 +161,7 @@ const addTransaction = () => {
     );
 
   if (validAccounts.length === 0) {
-    alert(t("addBill.atLeastOneAccount"));
+    alert(t("addBill.atLeastOneAccount")); // Could replace with a snackbar later
     return;
   }
 
@@ -167,38 +195,17 @@ const addTransaction = () => {
 </script>
 
 <style scoped>
-/* VueDatePicker 样式调整 */
+/* VueDatePicker overrides to match Vuetify roughly */
 :deep(.dp__input) {
-  padding: 0.5rem 0.75rem !important;
-  border: 1px solid #d1d5db !important;
-  border-radius: 0.375rem !important;
-  transition: all 0.15s ease-in-out !important;
-  background-image: none !important;
+  padding: 10px 12px;
+  border-radius: 4px;
+  border-color: #9e9e9e; /* Grey darken-1 approx */
+  font-family: inherit;
 }
-
+:deep(.dp__input:hover) {
+    border-color: #212121; /* text-color approx */
+}
 :deep(.dp__input:focus) {
-  outline: none !important;
-  border-color: #3b82f6 !important;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5) !important;
-}
-
-:deep(.dp__input_wrap) {
-  border: none !important;
-}
-
-:deep(.dp__main) {
-  border: none !important;
-}
-
-/* 隐藏所有图标 */
-:deep(.dp__input_icon),
-:deep(.dp__clear_icon),
-:deep(.dp__calendar_icon) {
-  display: none !important;
-}
-
-/* 确保输入框右侧没有额外的空间 */
-:deep(.dp__input_icons) {
-  display: none !important;
+    border-color: #6200ee; /* Primary */
 }
 </style>

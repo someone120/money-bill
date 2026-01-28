@@ -77,7 +77,7 @@ let op = ref({
       type: "bar",
       barWidth: "20%",
       data: [0, 0, 0, 0, 0, 0, 0],
-      animationDelay: function (idx) {
+      animationDelay: function (idx: number) {
         return idx * 10;
       },
       color: "#f33c75",
@@ -87,7 +87,7 @@ let op = ref({
       type: "bar",
       barWidth: "20%",
       data: [0, 0, 0, 0, 0, 0, 0],
-      animationDelay: function (idx) {
+      animationDelay: function (idx: number) {
         return idx * 10;
       },
       color: "#60bf23",

@@ -1,131 +1,50 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { RouterView } from "vue-router";
 import SideBar from "./components/side-bar.vue";
+import AddBill from "./components/PC/AddBill/AddBill.vue";
+
+const showAddBill = ref(false);
 </script>
 
 <template>
-  <div class="h-screen w-screen flex max-w-full">
-    <div class="bg-white transition-all duration-300 ease-in-out">
-      <SideBar />
-    </div>
-    <div class="flex flex-col flex-1 w-full">
-      <div class="h-15 bg-white"></div>
-      <RouterView />
-    </div>
-  </div>
+  <v-app>
+    <SideBar />
+    
+    <v-app-bar density="compact" flat border>
+       <v-app-bar-title>{{ $t("app.name") }}</v-app-bar-title>
+    </v-app-bar>
+
+    <v-main class="bg-grey-lighten-4">
+      <div class="d-flex justify-end pa-4">
+        <v-btn
+          icon="mdi-plus"
+          color="grey-darken-3"
+          elevation="4"
+          @click="showAddBill = true"
+        ></v-btn>
+      </div>
+      
+      <div class="px-4 pb-4 h-100">
+         <RouterView />
+      </div>
+    </v-main>
+
+    <v-dialog v-model="showAddBill" max-width="800" scrollable>
+      <v-card class="rounded-lg">
+        <v-card-title class="d-flex justify-space-between align-center pa-4">
+           <span class="text-h6">{{ $t("addTransaction.title") }}</span>
+           <v-btn icon="mdi-close" variant="text" @click="showAddBill = false"></v-btn>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text class="pa-0">
+          <AddBill /> <!-- Consider passing a prop or listener to close dialog on success -->
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+  </v-app>
 </template>
 
 <style scoped>
-.logo.vite:hover {
-    filter: drop-shadow(0 0 2em #747bff);
-}
-
-.logo.vue:hover {
-    filter: drop-shadow(0 0 2em #249b73);
-}
-
-:root {
-    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 400;
-
-    color: #0f0f0f;
-    background-color: #f6f6f6;
-
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-text-size-adjust: 100%;
-}
-
-.logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: 0.75s;
-}
-
-.logo.tauri:hover {
-    filter: drop-shadow(0 0 2em #24c8db);
-}
-
-.row {
-    display: flex;
-    justify-content: center;
-}
-
-a {
-    font-weight: 500;
-    color: #646cff;
-    text-decoration: inherit;
-}
-
-a:hover {
-    color: #535bf2;
-}
-
-h1 {
-    text-align: center;
-}
-
-input,
-button {
-    border-radius: 8px;
-    border: 1px solid transparent;
-    padding: 0.6em 1.2em;
-    font-size: 1em;
-    font-weight: 500;
-    font-family: inherit;
-    color: #0f0f0f;
-    background-color: #ffffff;
-    transition: border-color 0.25s;
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-}
-
-button {
-    cursor: pointer;
-}
-
-button:hover {
-    border-color: #396cd8;
-}
-button:active {
-    border-color: #396cd8;
-    background-color: #e8e8e8;
-}
-
-input,
-button {
-    outline: none;
-}
-
-#greet-input {
-    margin-right: 5px;
-}
-@media screen and (max-width: 700px) {
-    .desk-only {
-        display: none !important;
-    }
-}
-@media (prefers-color-scheme: dark) {
-    :root {
-        color: #f6f6f6;
-        background-color: #2f2f2f;
-    }
-
-    a:hover {
-        color: #24c8db;
-    }
-
-    input,
-    button {
-        color: #ffffff;
-        background-color: #0f0f0f98;
-    }
-    button:active {
-        background-color: #0f0f0f69;
-    }
-}
+/* Custom styles if needed, mostly handled by Vuetify now */
 </style>
