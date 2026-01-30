@@ -76,6 +76,7 @@ fn get_income_accounts(conn: tauri::State<ConnectionWrapper>) -> Vec<AccountIcon
             name: it.name.clone(),
             icon: it.icon.clone().unwrap_or("".to_string()),
             currency: it.currency.clone(),
+            balance: it.balance.to_f32().unwrap_or(0.0),
         })
         .collect();
     return accounts;
@@ -100,6 +101,7 @@ fn get_expenses_accounts(conn: tauri::State<ConnectionWrapper>) -> Vec<AccountIc
             name: it.name.clone(),
             icon: it.icon.clone().unwrap_or("".to_string()),
             currency: it.currency.clone(),
+            balance: it.balance.to_f32().unwrap_or(0.0),
         })
         .collect();
     return accounts;
@@ -124,6 +126,7 @@ fn get_assets_accounts(conn: tauri::State<ConnectionWrapper>) -> Vec<AccountIcon
             name: it.name.clone(),
             icon: it.icon.clone().unwrap_or("".to_string()),
             currency: it.currency.clone(),
+            balance: it.balance.to_f32().unwrap_or(0.0),
         })
         .collect();
     return accounts;
@@ -148,9 +151,66 @@ fn get_liabilities_accounts(conn: tauri::State<ConnectionWrapper>) -> Vec<Accoun
             name: it.name.clone(),
             icon: it.icon.clone().unwrap_or("".to_string()),
             currency: it.currency.clone(),
+            balance: it.balance.to_f32().unwrap_or(0.0),
         })
         .collect();
     return accounts;
+}
+
+#[tauri::command]
+/// 添加账户
+fn add_account(
+    conn: tauri::State<ConnectionWrapper>,
+    name: String,
+    currency: String,
+    icon: Option<String>,
+    extra: Option<String>,
+) -> Result<(), String> {
+    let conn = conn.db.lock().unwrap();
+    account::add_account(
+        &conn,
+        &name,
+        &currency,
+        icon.as_deref().unwrap_or(""),
+        extra.as_deref().unwrap_or(""),
+    )
+    .map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+/// 更新账户
+fn update_account(
+    conn: tauri::State<ConnectionWrapper>,
+    name: String,
+    currency: String,
+    icon: Option<String>,
+    extra: Option<String>,
+) -> Result<(), String> {
+    let conn = conn.db.lock().unwrap();
+    // Assuming backend update_account takes an Account struct or similar.
+    // Based on account.rs: pub fn update_account(conn: &Connection, account: &Account)
+    // We need to fetch the existing balance or allow updating it?
+    // The current update_account in account.rs updates everything including balance.
+    // However, usually we don't update balance manually via this API unless it's a correction.
+    // For now let's fetch the account to get the balance, then update.
+    
+    let mut accounts = account::read_account(&conn, &name).map_err(|e| e.to_string())?;
+    if let Some(mut account) = accounts.pop() {
+        account.currency = currency;
+        account.icon = icon;
+        account.extra = extra;
+        account::update_account(&conn, &account).map_err(|e| e.to_string())?;
+        Ok(())
+    } else {
+        Err("Account not found".to_string())
+    }
+}
+
+#[tauri::command]
+/// 删除账户
+fn delete_account(conn: tauri::State<ConnectionWrapper>, name: String) -> Result<(), String> {
+    let conn = conn.db.lock().unwrap();
+    account::del_account(&conn, &name).map_err(|e| e.to_string())
 }
 
 #[tauri::command]
@@ -300,7 +360,10 @@ pub fn run() {
             add_bills,
             get_transaction_history,
             get_assets_accounts,
-            get_liabilities_accounts
+            get_liabilities_accounts,
+            add_account,
+            update_account,
+            delete_account
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

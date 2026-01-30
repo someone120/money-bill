@@ -21,7 +21,15 @@
         </span>
       </div>
       <!-- 余额、币种等 -->
-      <div class="flex ml-auto">
+      <div class="flex ml-auto items-center">
+        <div class="mr-4 opacity-0 group-hover:opacity-100 transition-opacity flex space-x-2">
+           <button class="p-1 hover:bg-gray-200 rounded text-gray-600" @click.stop="$emit('edit', account)" :title="$t('common.edit')">
+             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+           </button>
+           <button class="p-1 hover:bg-red-100 rounded text-red-600" @click.stop="$emit('delete', account)" :title="$t('common.delete')">
+             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+           </button>
+        </div>
         <span class="w-40 text-right tabular-nums">
           <!-- 父节点显示子节点余额总和，浅灰色显示 -->
           <template v-if="account.isParent">

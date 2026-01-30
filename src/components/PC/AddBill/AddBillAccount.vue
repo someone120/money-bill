@@ -1,23 +1,21 @@
 <template>
   <v-menu v-model="isOpen" :close-on-content-click="false" location="bottom start">
     <template v-slot:activator="{ props }">
-      <v-text-field
+      <div
         v-bind="props"
-        :model-value="displayAccount.name.split('::').slice(-1)[0] || t('addBillAccount.selectAccount')"
-        readonly
-        variant="outlined"
-        append-inner-icon="mdi-chevron-down"
-        hide-details
-        density="compact"
-        class="cursor-pointer"
+        class="input-field flex items-center justify-between cursor-pointer w-full !py-3 h-[50px] bg-background"
         @click="isOpen = true"
       >
-        <template v-slot:prepend-inner>
-          <v-avatar size="24" color="grey-lighten-3" class="text-caption text-grey-darken-2 mr-2">
-             {{ displayAccount.name?.split("::").slice(-1)[0]?.substring(0, 1) || "?" }}
-          </v-avatar>
-        </template>
-      </v-text-field>
+        <div class="flex items-center gap-2 overflow-hidden">
+             <v-avatar size="24" color="grey-lighten-3" class="text-caption text-grey-darken-2 flex-shrink-0">
+                 {{ displayAccount.name?.split("::").slice(-1)[0]?.substring(0, 1) || "?" }}
+             </v-avatar>
+             <span class="truncate text-foreground">
+                 {{ displayAccount.name.split('::').slice(-1)[0] || t('addBillAccount.selectAccount') }}
+             </span>
+        </div>
+        <v-icon icon="mdi-chevron-down" color="grey-darken-1" size="small"></v-icon>
+      </div>
     </template>
 
     <v-card width="350">

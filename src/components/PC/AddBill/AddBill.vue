@@ -1,103 +1,101 @@
 <template>
-  <v-container>
-    <!-- Basic Info -->
-    <v-row>
-      <v-col cols="12" md="6">
-        <label class="text-caption text-grey-darken-1 mb-1 d-block">{{ $t("addBill.dateLabel") }}</label>
-        <v-menu
-          v-model="dateMenu"
-          :close-on-content-click="false"
-          transition="scale-transition"
-          min-width="auto"
-        >
-          <template v-slot:activator="{ props }">
-            <v-text-field
-              v-model="formattedDate"
-              :placeholder="$t('addBill.datePlaceholder')"
-              prepend-inner-icon="mdi-calendar"
-              readonly
-              v-bind="props"
-              variant="outlined"
-              density="comfortable"
-              hide-details
-            ></v-text-field>
-          </template>
-          <v-date-picker
-            v-model="date"
-            color="primary"
-            @update:modelValue="dateMenu = false"
-          ></v-date-picker>
-        </v-menu>
-      </v-col>
-      <v-col cols="12" md="6">
-        <label class="text-caption text-grey-darken-1 mb-1 d-block">{{ $t("addBill.remarkLabel") }}</label>
-        <v-text-field
-          v-model="extra"
-          :placeholder="$t('addBill.remarkPlaceholder')"
-          variant="outlined"
-          density="comfortable"
-          hide-details
-        ></v-text-field>
-      </v-col>
-    </v-row>
+  <v-container class="!p-0">
+    <div class="card">
+      <h2 class="text-xl font-heading font-bold mb-6 text-foreground">{{$t("addTransaction.title")}}</h2>
+      
+      <!-- Basic Info -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div>
+          <label class="block text-sm font-medium text-muted-foreground mb-2">{{ $t("addBill.dateLabel") }}</label>
+          <v-menu
+            v-model="dateMenu"
+            :close-on-content-click="false"
+            transition="scale-transition"
+            min-width="auto"
+          >
+            <template v-slot:activator="{ props }">
+              <input
+                type="text"
+                :value="formattedDate"
+                readonly
+                v-bind="props"
+                class="input-field w-full cursor-pointer"
+                :placeholder="$t('addBill.datePlaceholder')"
+              />
+            </template>
+            <v-date-picker
+              v-model="date"
+              color="primary"
+              @update:modelValue="dateMenu = false"
+            ></v-date-picker>
+          </v-menu>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-muted-foreground mb-2">{{ $t("addBill.remarkLabel") }}</label>
+          <input
+            v-model="extra"
+            type="text"
+            class="input-field w-full"
+            :placeholder="$t('addBill.remarkPlaceholder')"
+          />
+        </div>
+      </div>
 
-    <v-divider class="my-4"></v-divider>
+      <div class="w-full h-px bg-border my-6"></div>
 
-    <!-- Account List -->
-    <div v-for="(account, index) in accountList" :key="index" class="mb-4">
-      <v-row align="center">
-        <v-col cols="12" md="6">
-           <label class="text-caption text-grey-darken-1 mb-1 d-block">
-             {{ $t("addBill.account") }} {{ index + 1 }}
-           </label>
-           <AddBillAccount
-             :id="'' + index"
-             :displayAccount="account"
-             @changeAccount="changeAccount"
-           />
-        </v-col>
-        <v-col cols="12" md="6">
-           <label class="text-caption text-grey-darken-1 mb-1 d-block">{{ $t("addBill.amount") }}</label>
-           <div class="d-flex align-center">
-             <v-text-field
-               v-model="amounts[index]"
-               :placeholder="$t('addBill.amountPlaceholder')"
-               type="number"
-               variant="outlined"
-               density="compact"
-               hide-details
-               prefix="¥"
-               class="flex-grow-1"
-             ></v-text-field>
-             
-             <v-btn
-               v-if="index > 0"
-               icon="mdi-delete"
-               variant="text"
-               color="error"
-               class="ml-2"
-               @click="deleteAccount(index)"
-               :title="$t('addBill.deleteAccountTitle')"
-             ></v-btn>
-           </div>
-        </v-col>
-      </v-row>
-    </div>
+      <!-- Account List -->
+      <div class="space-y-4">
+        <div v-for="(account, index) in accountList" :key="index" class="p-4 rounded-lg border border-border/50 bg-secondary/5">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+            <div>
+               <label class="block text-sm font-medium text-muted-foreground mb-2">
+                 {{ $t("addBill.account") }} {{ index + 1 }}
+               </label>
+               <AddBillAccount
+                 :id="'' + index"
+                 :displayAccount="account"
+                 @changeAccount="changeAccount"
+                 class="w-full"
+               />
+            </div>
+            <div>
+               <label class="block text-sm font-medium text-muted-foreground mb-2">{{ $t("addBill.amount") }}</label>
+               <div class="flex items-center gap-2">
+                 <div class="relative flex-grow">
+                   <span class="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">¥</span>
+                   <input
+                     v-model="amounts[index]"
+                     type="number"
+                     class="input-field w-full pl-8"
+                     :placeholder="$t('addBill.amountPlaceholder')"
+                   />
+                 </div>
+                 
+                 <button
+                   v-if="index > 0"
+                   @click="deleteAccount(index)"
+                   class="p-3 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
+                   :title="$t('addBill.deleteAccountTitle')"
+                 >
+                   <v-icon icon="mdi-delete"></v-icon>
+                 </button>
+               </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <!-- Actions -->
-    <v-row class="mt-4">
-      <v-spacer></v-spacer>
-      <v-col cols="auto">
-        <v-btn
-          color="primary"
+      <!-- Actions -->
+      <div class="mt-8 flex justify-end">
+        <button
           @click="addTransaction"
-          prepend-icon="mdi-check"
-          elevation="2"
+          class="btn-primary flex items-center gap-2"
         >
+          <v-icon icon="mdi-check" size="small"></v-icon>
           {{ $t("addBill.addTransaction") }}
-        </v-btn>
-      </v-col>
-    </v-row>
+        </button>
+      </div>
+    </div>
   </v-container>
 </template>
 

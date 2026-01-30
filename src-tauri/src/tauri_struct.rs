@@ -9,7 +9,8 @@ pub struct WeeklyIncomeExpenses {
 pub struct AccountIconName {
     pub name:String,
     pub icon:String,
-    pub currency:String
+    pub currency:String,
+    pub balance: f32,
 }
 
 #[derive(Serialize, Deserialize)]

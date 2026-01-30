@@ -18,7 +18,8 @@
     "recentTransactions": "Recent Transactions",
     "viewAll": "View All",
     "addTransaction": "Add Transaction",
-    "income": "Income"
+    "income": "Income",
+    "statistics": "Statistics"
   },
   "addTransaction": {
     "title": "Add Transaction",
@@ -54,7 +55,19 @@
     "assetAccounts": "Asset Accounts",
     "liabilityAccounts": "Liability Accounts",
     "allAccounts": "All Accounts",
-    "loadError": "Failed to load assets data"
+    "loadError": "Failed to load assets data",
+    "addAccount": "Add Account",
+    "editAccount": "Edit Account",
+    "accountName": "Account Name",
+    "accountNameHint": "Name will be used as identifier",
+    "currency": "Currency",
+    "accountType": "Account Type"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete"
   },
   "addBillAccount": {
     "selectAccount": "Select Account",

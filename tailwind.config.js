@@ -4,6 +4,11 @@ export default {
     content: ["./src/**/*.{html,js,vue,ts}"],
   theme: {
   	extend: {
+  		fontFamily: {
+  			heading: ['Caveat', 'cursive'],
+  			body: ['Quicksand', 'sans-serif'],
+  			sans: ['Quicksand', 'sans-serif'],
+  		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',

@@ -18,7 +18,8 @@
     "recentTransactions": "最近交易",
     "viewAll": "查看全部",
     "addTransaction": "添加交易",
-    "income": "收入"
+    "income": "收入",
+    "statistics": "统计"
   },
   "addTransaction": {
     "title": "添加交易",
@@ -54,7 +55,19 @@
     "assetAccounts": "储蓄账户",
     "liabilityAccounts": "负债账户",
     "allAccounts": "全部账户",
-    "loadError": "加载资产数据失败"
+    "loadError": "加载资产数据失败",
+    "addAccount": "添加账户",
+    "editAccount": "编辑账户",
+    "accountName": "账户名称",
+    "accountNameHint": "名称将作为标识",
+    "currency": "货币",
+    "accountType": "账户类型"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "取消",
+    "edit": "编辑",
+    "delete": "删除"
   },
   "assest": {
     "name": "资产"

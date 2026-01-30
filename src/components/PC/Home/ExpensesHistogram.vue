@@ -1,5 +1,5 @@
 <template>
-  <div class="h-72 bg-white rounded-lg w-full">
+  <div class="h-72 card w-full">
     <v-chart
       class="h-full w-full"
       :option="option"
@@ -24,6 +24,8 @@ import { GridComponent } from "echarts/components";
 import { ECBasicOption } from "echarts/types/dist/shared";
 import { invoke } from "@tauri-apps/api/core";
 import { useI18n } from "vue-i18n";
+import { computed } from "vue";
+
 use([
   GridComponent,
   CanvasRenderer,
@@ -35,12 +37,19 @@ use([
 const { t } = useI18n();
 provide(THEME_KEY, "auto");
 let loading = ref<boolean>(false);
+
+// Use computed/ref to allow theme updates? For now static is fine or just inline
 let op = ref({
   tooltip: {
     trigger: "axis",
     axisPointer: {
       type: "shadow",
     },
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderColor: '#e4e4e7',
+    textStyle: {
+      color: '#18181b'
+    }
   },
   grid: {
     left: "3%",
@@ -64,11 +73,21 @@ let op = ref({
       axisTick: {
         alignWithLabel: true,
       },
+      axisLine: {
+        lineStyle: {
+            color: '#71717a' /* zinc-500 */
+        }
+      }
     },
   ],
   yAxis: [
     {
       type: "value",
+      splitLine: {
+          lineStyle: {
+              color: '#e4e4e7' /* zinc-200 */
+          }
+      }
     },
   ],
   series: [
@@ -80,7 +99,10 @@ let op = ref({
       animationDelay: function (idx: number) {
         return idx * 10;
       },
-      color: "#f33c75",
+      color: "#e11d48",
+      itemStyle: {
+          borderRadius: [4, 4, 0, 0]
+      }
     },
     {
       name: t("income"),
@@ -90,7 +112,10 @@ let op = ref({
       animationDelay: function (idx: number) {
         return idx * 10;
       },
-      color: "#60bf23",
+      color: "#059669",
+      itemStyle: {
+          borderRadius: [4, 4, 0, 0]
+      }
     },
   ],
 });
